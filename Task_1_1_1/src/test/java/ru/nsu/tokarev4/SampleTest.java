@@ -1,4 +1,4 @@
-package ru.nsu.shadrina;
+package ru.nsu.tokarev4;
 
 import org.junit.jupiter.api.Test;
 

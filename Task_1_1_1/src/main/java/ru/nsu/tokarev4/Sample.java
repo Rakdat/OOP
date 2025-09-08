@@ -1,7 +1,7 @@
-package ru.nsu.shadrina;
+package ru.nsu.tokarev4;
 
 /**
- * Sample class to simulate 2.1 task functionality
+ * Sample class to simulate 1.1 task functionality
  */
 public class Sample {
     public static void printHelloWorld() {
