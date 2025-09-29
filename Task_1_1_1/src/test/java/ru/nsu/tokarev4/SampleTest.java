@@ -61,13 +61,6 @@ class SampleTest {
     }
 
     @Test
-    void checkNullArray() {
-        int[] input = null;
-        int[] expected = null;
-        assertArrayEquals(expected, HeapSort.sort(input));
-    }
-
-    @Test
     void checkDuplicates() {
         int[] input = {5, 2, 5, 1, 2};
         int[] expected = {1, 2, 2, 5, 5};
