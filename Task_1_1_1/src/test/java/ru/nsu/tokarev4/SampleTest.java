@@ -33,7 +33,7 @@ class SampleTest {
     }
 
     @Test
-    void testheapify(){
+    void testheapify() {
         int[] input = {4, 3, 5, 2, 1};
         HeapSort.heapify(input, 5, 0);
         assertEquals(5, input[0]);
