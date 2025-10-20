@@ -30,7 +30,7 @@ class SampleTest {
 
     @Test
     void testDeckCreation() {
-        Deck.count_of_deck = 1;
+        Deck.countOfDeck = 1;
         Deck.initdeck();
 
         assertEquals(52, Deck.deck.length);
@@ -116,7 +116,7 @@ class SampleTest {
 
     @Test
     void testShuffle() {
-        Deck.count_of_deck = 1;
+        Deck.countOfDeck = 1;
         Deck.initdeck();
 
         Card[] originalDeck = Deck.deck.clone();

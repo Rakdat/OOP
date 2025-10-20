@@ -15,7 +15,7 @@ public class Round {
      * Включает раздачу начальных карт, ходы игрока и дилера,
      * проверку условий победы и обновление счета.
      */
-    public static void rnd(){
+    public static void rnd() {
         count_dealers_cards = 0;
         count_player_cards = 0;
         player_score = 0;
@@ -26,7 +26,7 @@ public class Round {
         cartAdd(1, 2);
         cartAdd(2, 2);
         int res = winnerSearchAfterStart();
-        if (res == 1){
+        if (res == 1) {
             printhands(2);
             System.out.println("Еще карту? 1 - взять / 0 - не брать?");
             Scanner in = new Scanner(System.in);
@@ -58,12 +58,12 @@ public class Round {
                 ans = in.nextInt();
             }
             int flagforprint = 0;
-            if (losewin == 0){
-                while(dealer_score < 17) {
+            if (losewin == 0) {
+                while (dealer_score < 17) {
                     flagforprint = 1;
                     cartAdd(2, 1);
                     res = checkLose(dealer_score);
-                    if (res == 2){
+                    if (res == 2) {
                         losewin = 1;
                         printhands(2);
                         System.out.println("Выиграл дилер");
@@ -82,8 +82,8 @@ public class Round {
                     }
                 }
             }
-            if (losewin == 0){
-                if (flagforprint == 0){
+            if (losewin == 0) {
+                if (flagforprint == 0) {
                     printhands(3);
                 }
                 checkwinner();

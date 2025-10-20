@@ -19,9 +19,9 @@ public class Blackjack {
     public static void game() {
         System.out.println("Сколько колод будем использовать?");
         Scanner in = new Scanner(System.in);
-        while (count_of_deck < 1 ) {
-            count_of_deck = in.nextInt();
-            if (count_of_deck < 1) {
+        while (countOfDeck < 1 ) {
+            countOfDeck = in.nextInt();
+            if (countOfDeck < 1) {
                 System.out.println("Нужно ввести целое число больше 1");
             }
         }
@@ -30,7 +30,7 @@ public class Blackjack {
         System.out.println("Дилер начал раздачу карт..");
         String gamestatus = "y";
         while (Objects.equals(gamestatus, "y")) {
-            if (52 * count_of_deck - card_index < 10 * count_of_deck) {
+            if (52 * countOfDeck - card_index < 10 * countOfDeck) {
                 System.out.println("Ох, колода подходит к концу, время перемешать");
                 shuffle();
             }

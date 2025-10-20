@@ -23,7 +23,7 @@ public class Hands {
      * Упрощенный метод для вывода содержимого рук игрока и дилера.
      * @param dealer режим отображения руки дилера (1-3)
      */
-    public static void printhands(int dealer){
+    public static void printhands(int dealer) {
         printHand(1);
         printHand(dealer);
     }
@@ -63,17 +63,17 @@ public class Hands {
      * @param dp идентификатор получателя: 1 - игрок, 2 - дилер
      * @param cnt_carts количество карт для добавления
      */
-    public static void cartAdd(int dp, int cnt_carts){
-        if(dp == 1){
+    public static void cartAdd(int dp, int cnt_carts) {
+        if (dp == 1) {
             for(int i = 0; i < cnt_carts; i++) {
                 System.out.println("Вы получили карту" + deck[card_index]);
                 playerhand[count_player_cards++] = new Card(deck[card_index].name, deck[card_index].suit, deck[card_index].value);
                 player_score += deck[card_index++].value;
             }
         }
-        else{
+        else {
             for(int i = 0; i < cnt_carts; i++) {
-                if(count_dealers_cards > 2){
+                if(count_dealers_cards > 2) {
                     System.out.println("Дилер получил карту" + deck[card_index]);
                 }
                 dealerhand[count_dealers_cards++] = new Card(deck[card_index].name, deck[card_index].suit, deck[card_index].value);

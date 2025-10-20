@@ -11,14 +11,14 @@ public class Deck {
     /** Массив всех карт в колоде */
     public static Card[] deck;
     /** Количество используемых колод */
-    public static int count_of_deck = 0;
+    public static int countOfDeck = 0;
     /** Индекс следующей карты для выдачи */
     public static int card_index;
     /**
      * Создает и перемешивает новую колоду карт.
      * Инициализирует колоду и сбрасывает индекс выдачи карт.
      */
-    public static void deckCreate(){
+    public static void deckCreate() {
         initdeck();
         shuffle();
         card_index = 0;
@@ -47,8 +47,8 @@ public class Deck {
         String[] suits = {"Черви","Буби","Пики","Крести"};
         String[] ranks = {"2", "3", "4" ,"5","6", "7", "8", "9", "10", "Валет", "Дама", "Король", "Туз"};
         int index = 0;
-        deck = new Card[52*count_of_deck];
-        for (int DeckNum = 0; DeckNum<count_of_deck; DeckNum++){
+        deck = new Card[52*countOfDeck];
+        for (int DeckNum = 0; DeckNum<countOfDeck; DeckNum++) {
             for (String rank : ranks) {
                 for (String suit : suits) {
                     deck[index] = new Card(rank, suit, value_of_card(rank));

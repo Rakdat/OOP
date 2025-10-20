@@ -13,22 +13,22 @@ public class Score {
      * Возвращает 0 если игра завершена (кто-то выиграл или у двоих 21 очко), 1 если игра продолжается
      */
     public static int winnerSearchAfterStart() {
-        if (player_score == 21 && dealer_score !=21) {
+        if (player_score == 21 && dealer_score != 21) {
             printhands(3);
             System.out.println("Выиграл игрок");
             global_score[0]++;
             return 0;
-        } else if (dealer_score == 21 && player_score !=21) {
+        } else if (dealer_score == 21 && player_score != 21) {
             printhands(3);
             System.out.println("Выиграл дилер");
             global_score[1]++;
             return 0;
-        }else if (dealer_score == player_score){
-            if(dealer_score == 21){
+        } else if (dealer_score == player_score) {
+            if (dealer_score == 21) {
                 printhands(3);
                 System.out.println("Ничья");
                 return 0;
-            }else{
+            } else {
                 return 1;
             }
         }
@@ -53,7 +53,7 @@ public class Score {
      * Сравнивает счета игрока и дилера.
      */
     public static void checkwinner() {
-        if (player_score > dealer_score){
+        if (player_score > dealer_score) {
             System.out.println("Игрок победил");
             global_score[0]++;
         } else if (player_score == dealer_score) {
