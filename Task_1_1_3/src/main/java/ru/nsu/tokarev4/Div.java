@@ -1,14 +1,17 @@
 package ru.nsu.tokarev4;
 
+import java.util.Map;
+
 /**
  * Класс, представляющий операцию деления двух выражений.
  */
-public class Div extends Expression {
+public class Div implements Expression {
     private final Expression left;
     private final Expression right;
 
     /**
      * Создает новое выражение деления.
+     *
      * @param left левый операнд (числитель)
      * @param right правый операнд (знаменатель)
      */
@@ -19,6 +22,7 @@ public class Div extends Expression {
 
     /**
      * Возвращает левый операнд (числитель).
+     *
      * @return левое выражение
      */
     public Expression getLeft() {
@@ -27,6 +31,7 @@ public class Div extends Expression {
 
     /**
      * Возвращает правый операнд (знаменатель).
+     *
      * @return правое выражение
      */
     public Expression getRight() {
@@ -34,7 +39,7 @@ public class Div extends Expression {
     }
 
     @Override
-    public int eval(String variables) {
+    public int eval(Map<String, Integer> variables) {
         int denominator = right.eval(variables);
         if (denominator == 0) {
             throw new ArithmeticException("Деление на ноль");
@@ -44,7 +49,6 @@ public class Div extends Expression {
 
     @Override
     public Expression derivative(String variableName) {
-        // Производная частного: (u/v)' = (u'v - uv') / v^2
         return new Div(
                 new Sub(
                         new Mul(left.derivative(variableName), right),
@@ -55,16 +59,7 @@ public class Div extends Expression {
     }
 
     @Override
-    public void print() {
-        System.out.print("(");
-        left.print();
-        System.out.print("/");
-        right.print();
-        System.out.print(")");
-    }
-
-    @Override
     public String toString() {
-        return "(" + left.toString() + "/" + right.toString() + ")";
+        return "(" + left + "/" + right + ")";
     }
 }

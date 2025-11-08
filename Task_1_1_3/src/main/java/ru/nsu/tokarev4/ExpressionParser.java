@@ -7,6 +7,7 @@ public class ExpressionParser {
 
     /**
      * Парсит математическое выражение из строки.
+     *
      * @param expression строка с выражением
      * @return распарсенное выражение
      * @throws IllegalArgumentException если выражение имеет неверный формат

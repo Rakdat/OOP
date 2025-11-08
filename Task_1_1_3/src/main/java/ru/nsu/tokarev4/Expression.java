@@ -1,60 +1,57 @@
 package ru.nsu.tokarev4;
 
+import java.util.Map;
+
 /**
- * Абстрактный класс, представляющий математическое выражение.
+ * Интерфейс, представляющий математическое выражение.
  * Является корнем иерархии классов для работы с выражениями.
+ *
+ * <p>Примеры создания выражений:
+ * <pre>
+ * // Создание вручную
+ * Expression expr = new Add(
+ *     new Number(3),
+ *     new Mul(new Number(2), new Variable("x"))
+ * );
+ *
+ * // Парсинг из строки
+ * Expression parsed = ExpressionParser.parse("(3+(2*x))");
+ * </pre>
+ *
+ * <p>Возможности выражений:
+ * <ul>
+ *   <li>Вычисление значения при заданных переменных</li>
+ *   <li>Символьное дифференцирование по переменной</li>
+ *   <li>Строковое представление через toString()</li>
+ * </ul>
+ *
+ * <p>Для добавления новой операции необходимо:
+ * <ol>
+ *   <li>Создать класс, реализующий Expression</li>
+ *   <li>Реализовать методы eval(), derivative()</li>
+ *   <li>Переопределить метод toString() для строкового представления</li>
+ *   <li>Добавить поддержку в ExpressionParser</li>
+ * </ol>
+ *
+ * <p>Метод toString() должен возвращать строковое представление выражения
+ * в формате с круглыми скобками, например: "(3+(2*x))"
  */
-public abstract class Expression {
+public interface Expression {
 
     /**
      * Вычисляет значение выражения при заданных значениях переменных.
-     * @param variables строка с означиванием переменных в формате "var1 = value1; var2 = value2; ..."
+     *
+     * @param variables карта переменных: имя → значение
      * @return результат вычисления выражения
+     * @throws IllegalArgumentException если переменная не найдена
      */
-    public abstract int eval(String variables);
+    int eval(Map<String, Integer> variables);
 
     /**
      * Вычисляет производную выражения по заданной переменной.
+     *
      * @param variableName имя переменной, по которой производится дифференцирование
      * @return новое выражение, представляющее производную
      */
-    public abstract Expression derivative(String variableName);
-
-    /**
-     * Печатает выражение в консоль.
-     */
-    public abstract void print();
-
-    /**
-     * Возвращает строковое представление выражения.
-     * @return строка, представляющая выражение
-     */
-    @Override
-    public abstract String toString();
-
-    /**
-     * Парсит строку с означиванием переменных и возвращает значение конкретной переменной.
-     * @param variables строка с означиванием переменных
-     * @param varName имя искомой переменной
-     * @return значение переменной
-     * @throws IllegalArgumentException если переменная не найдена
-     */
-    protected int parseVariableValue(String variables, String varName) {
-        if (variables == null || variables.trim().isEmpty()) {
-            throw new IllegalArgumentException("Переменные не заданы");
-        }
-
-        String[] assignments = variables.split(";");
-        for (String assignment : assignments) {
-            String[] parts = assignment.split("=");
-            if (parts.length == 2) {
-                String name = parts[0].trim();
-                String value = parts[1].trim();
-                if (name.equals(varName)) {
-                    return Integer.parseInt(value);
-                }
-            }
-        }
-        throw new IllegalArgumentException("Переменная '" + varName + "' не найдена");
-    }
+    Expression derivative(String variableName);
 }

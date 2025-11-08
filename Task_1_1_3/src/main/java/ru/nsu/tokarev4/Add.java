@@ -1,14 +1,17 @@
 package ru.nsu.tokarev4;
 
+import java.util.Map;
+
 /**
  * Класс, представляющий операцию сложения двух выражений.
  */
-public class Add extends Expression {
+public class Add implements Expression {
     private final Expression left;
     private final Expression right;
 
     /**
      * Создает новое выражение сложения.
+     *
      * @param left левый операнд
      * @param right правый операнд
      */
@@ -19,6 +22,7 @@ public class Add extends Expression {
 
     /**
      * Возвращает левый операнд.
+     *
      * @return левое выражение
      */
     public Expression getLeft() {
@@ -27,6 +31,7 @@ public class Add extends Expression {
 
     /**
      * Возвращает правый операнд.
+     *
      * @return правое выражение
      */
     public Expression getRight() {
@@ -34,27 +39,17 @@ public class Add extends Expression {
     }
 
     @Override
-    public int eval(String variables) {
+    public int eval(Map<String, Integer> variables) {
         return left.eval(variables) + right.eval(variables);
     }
 
     @Override
     public Expression derivative(String variableName) {
-        // Производная суммы равна сумме производных
         return new Add(left.derivative(variableName), right.derivative(variableName));
     }
 
     @Override
-    public void print() {
-        System.out.print("(");
-        left.print();
-        System.out.print("+");
-        right.print();
-        System.out.print(")");
-    }
-
-    @Override
     public String toString() {
-        return "(" + left.toString() + "+" + right.toString() + ")";
+        return "(" + left + "+" + right + ")";
     }
 }

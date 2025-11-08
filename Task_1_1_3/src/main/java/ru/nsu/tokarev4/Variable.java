@@ -1,13 +1,16 @@
 package ru.nsu.tokarev4;
 
+import java.util.Map;
+
 /**
  * Класс, представляющий переменную в выражении.
  */
-public class Variable extends Expression {
+public class Variable implements Expression {
     private final String name;
 
     /**
      * Создает новую переменную.
+     *
      * @param name имя переменной
      */
     public Variable(String name) {
@@ -16,6 +19,7 @@ public class Variable extends Expression {
 
     /**
      * Возвращает имя переменной.
+     *
      * @return имя переменной
      */
     public String getName() {
@@ -23,23 +27,20 @@ public class Variable extends Expression {
     }
 
     @Override
-    public int eval(String variables) {
-        return parseVariableValue(variables, name);
+    public int eval(Map<String, Integer> variables) {
+        if (variables.containsKey(name)) {
+            return variables.get(name);
+        }
+        throw new IllegalArgumentException("Переменная '" + name + "' не найдена");
     }
 
     @Override
     public Expression derivative(String variableName) {
-        // Производная по самой себе равна 1, по другим переменным - 0
         if (name.equals(variableName)) {
             return new Number(1);
         } else {
             return new Number(0);
         }
-    }
-
-    @Override
-    public void print() {
-        System.out.print(name);
     }
 
     @Override
