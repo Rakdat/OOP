@@ -1,21 +1,26 @@
 package ru.nsu.tokarev4;
 
-import java.util.*;
-import java.io.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.io.IOException;
 
+/**
+ * Реализация графа с использованием матрицы смежности.
+ * Хранит граф в виде квадратной матрицы, где matrix[i][j] = 1 означает наличие ребра из i в j.
+ */
 public class AdjacencyMatrix implements Graph{
-    private int[][] matrix;
-    private Map<Integer, Integer> vertexToIndex;
-    private List<Integer> indexToVertex;
-    private int vertexCount;
+    private int[][] matrix = new int[0][0];;
+    private Map<Integer, Integer> vertexToIndex = new HashMap<>();;
+    private List<Integer> indexToVertex = new ArrayList<>();;
+    private int vertexCount = 0;
 
-    public AdjacencyMatrix() {
-        this.vertexToIndex = new HashMap<>();
-        this.indexToVertex = new ArrayList<>();
-        this.matrix = new int[0][0];
-        this.vertexCount = 0;
-    }
-
+    /**
+     * Очищает граф, удаляя все вершины и рёбра.
+     */
     @Override
     public void clear() {
         matrix = new int[0][0];
@@ -24,6 +29,12 @@ public class AdjacencyMatrix implements Graph{
         vertexCount = 0;
     }
 
+    /**
+     * Добавляет вершину в граф.
+     * Если вершина уже существует, ничего не делает.
+     * При добавлении новой вершины матрица смежности расширяется.
+     * @param vertex вершина для добавления
+     */
     @Override
     public void addVertex(int vertex) {
         if(!vertexToIndex.containsKey((vertex))){
@@ -40,6 +51,12 @@ public class AdjacencyMatrix implements Graph{
 
     }
 
+    /**
+     * Удаляет вершину из графа.
+     * Также удаляет все рёбра, связанные с этой вершиной.
+     * Матрица смежности перестраивается с уменьшенным размером.
+     * @param vertex вершина для удаления
+     */
     @Override
     public void removeVertex(int vertex) {
         if(!vertexToIndex.containsKey((vertex))){
@@ -78,6 +95,12 @@ public class AdjacencyMatrix implements Graph{
         }
     }
 
+    /**
+     * Добавляет направленное ребро между двумя вершинами.
+     * Если вершины не существуют, они будут созданы.
+     * @param startVertex начальная вершина ребра
+     * @param endVertex конечная вершина ребра
+     */
     @Override
     public void addEdge(int startVertex, int endVertex) {
         addVertex(startVertex);
@@ -87,6 +110,11 @@ public class AdjacencyMatrix implements Graph{
         matrix[sv][ev] = 1;
     }
 
+    /**
+     * Удаляет направленное ребро между двумя вершинами.
+     * @param startVertex начальная вершина ребра
+     * @param endVertex конечная вершина ребра
+     */
     @Override
     public void removeEdge(int startVertex, int endVertex) {
         if (hasVertex(startVertex) && hasVertex(endVertex)){
@@ -96,6 +124,11 @@ public class AdjacencyMatrix implements Graph{
         }
     }
 
+    /**
+     * Возвращает список соседей вершины (вершин, в которые ведут рёбра из данной вершины).
+     * @param vertex вершина, для которой нужно найти соседей
+     * @return список соседних вершин
+     */
     @Override
     public List<Integer> getNeighbors(int vertex) {
         List<Integer> neighbors = new ArrayList<>();
@@ -113,35 +146,33 @@ public class AdjacencyMatrix implements Graph{
         return neighbors;
     }
 
+    /**
+     * Загружает граф из файла.
+     * Формат файла: каждая строка содержит две вершины, разделенные пробелом.
+     * @param filename имя файла для загрузки
+     * @throws IOException если произошла ошибка чтения файла
+     */
     @Override
     public void readFromFile(String filename) throws IOException {
-        clear();
-        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                line = line.trim();
-                if (line.isEmpty()){
-                    continue;
-                }
-                String[] parts = line.split("\\s+");
-                if (parts.length >= 2) {
-                    try {
-                        int start = Integer.parseInt(parts[0]);
-                        int end = Integer.parseInt(parts[1]);
-                        addEdge(start, end);
-                    } catch (NumberFormatException e) {
-                        System.err.println("Ошибка в строке: " + line);
-                    }
-                }
-            }
-        }
+        ReadFromFile.readGraphFromFile(this, filename);
     }
 
+    /**
+     * Проверяет существование вершины в графе.
+     * @param vertex вершина для проверки
+     * @return true если вершина существует, false в противном случае
+     */
     @Override
     public boolean hasVertex(int vertex) {
         return vertexToIndex.containsKey(vertex);
     }
 
+    /**
+     * Проверяет существование ребра между двумя вершинами.
+     * @param startVertex начальная вершина ребра
+     * @param endVertex конечная вершина ребра
+     * @return true если ребро существует, false в противном случае
+     */
     @Override
     public boolean hasEdge(int startVertex, int endVertex) {
         if (!hasVertex(startVertex) || !hasVertex(endVertex)){
@@ -152,11 +183,19 @@ public class AdjacencyMatrix implements Graph{
         return matrix[startIndex][endIndex] == 1;
     }
 
+    /**
+     * Возвращает количество вершин в графе.
+     * @return количество вершин
+     */
     @Override
     public int getVertexCount() {
         return vertexCount;
     }
 
+    /**
+     * Возвращает количество рёбер в графе.
+     * @return количество рёбер
+     */
     @Override
     public int getEdgeCount() {
         int cnt = 0;
@@ -170,11 +209,21 @@ public class AdjacencyMatrix implements Graph{
         return cnt;
     }
 
+    /**
+     * Возвращает множество всех вершин графа.
+     * @return множество вершин
+     */
     @Override
     public Set<Integer> getVertices() {
         return new HashSet<>(vertexToIndex.keySet());
     }
 
+    /**
+     * Сравнивает данный граф с другим объектом.
+     * Два графа считаются равными, если они имеют одинаковые множества вершин и рёбер.
+     * @param obj объект для сравнения
+     * @return true если графы равны, false в противном случае
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj){
@@ -197,6 +246,10 @@ public class AdjacencyMatrix implements Graph{
         return true;
     }
 
+    /**
+     * Возвращает строковое представление графа в виде матрицы смежности.
+     * @return строковое представление графа
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

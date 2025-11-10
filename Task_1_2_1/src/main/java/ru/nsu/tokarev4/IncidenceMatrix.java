@@ -1,23 +1,28 @@
 package ru.nsu.tokarev4;
 
-import java.util.*;
-import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.io.IOException;
 
+/**
+ * Реализация графа с использованием матрицы инцидентности.
+ * Хранит граф в виде матрицы, где строки соответствуют вершинам, а столбцы - рёбрам.
+ * Для каждого ребра start→end: в столбце ставится 1 для start вершины и -1 для end вершины.
+ */
 public class IncidenceMatrix implements Graph {
-    private List<List<Integer>> incidmatrix;
-    private Map<Integer, Integer> vertexToIndex;
-    private List<Integer> indexToVertex;
-    private int vertexCount;
-    private int edgeCount;
+    private final List<List<Integer>> incidmatrix = new ArrayList<>();
+    private Map<Integer, Integer> vertexToIndex = new LinkedHashMap<>();
+    private List<Integer> indexToVertex = new ArrayList<>();
+    private int vertexCount = 0;
+    private int edgeCount = 0;
 
-    public IncidenceMatrix() {
-        this.incidmatrix = new ArrayList<>();
-        this.vertexToIndex = new LinkedHashMap<>();
-        this.indexToVertex = new ArrayList<>();
-        this.vertexCount = 0;
-        this.edgeCount = 0;
-    }
-
+    /**
+     * Очищает граф, удаляя все вершины и рёбра.
+     */
     @Override
     public void clear() {
         incidmatrix.clear();
@@ -27,6 +32,12 @@ public class IncidenceMatrix implements Graph {
         edgeCount = 0;
     }
 
+    /**
+     * Добавляет вершину в граф.
+     * Если вершина уже существует, ничего не делает.
+     * При добавлении новой вершины добавляется строка в матрицу инцидентности.
+     * @param vertex вершина для добавления
+     */
     @Override
     public void addVertex(int vertex) {
         if (!vertexToIndex.containsKey(vertex)) {
@@ -39,6 +50,12 @@ public class IncidenceMatrix implements Graph {
         }
     }
 
+    /**
+     * Удаляет вершину из графа.
+     * Также удаляет все рёбра, связанные с этой вершиной.
+     * Удаляет строку из матрицы инцидентности.
+     * @param vertex вершина для удаления
+     */
     @Override
     public void removeVertex(int vertex) {
         if (vertexToIndex.containsKey(vertex)) {
@@ -61,6 +78,13 @@ public class IncidenceMatrix implements Graph {
         }
     }
 
+    /**
+     * Добавляет направленное ребро между двумя вершинами.
+     * Если вершины не существуют, они будут созданы.
+     * Добавляет новый столбец в матрицу инцидентности.
+     * @param startVertex начальная вершина ребра
+     * @param endVertex конечная вершина ребра
+     */
     @Override
     public void addEdge(int startVertex, int endVertex) {
         addVertex(startVertex);
@@ -77,6 +101,12 @@ public class IncidenceMatrix implements Graph {
         edgeCount++;
     }
 
+    /**
+     * Удаляет направленное ребро между двумя вершинами.
+     * Удаляет столбец из матрицы инцидентности.
+     * @param startVertex начальная вершина ребра
+     * @param endVertex конечная вершина ребра
+     */
     @Override
     public void removeEdge(int startVertex, int endVertex) {
         for (int i = 0; i < incidmatrix.size(); i++){
@@ -91,6 +121,11 @@ public class IncidenceMatrix implements Graph {
         }
     }
 
+    /**
+     * Возвращает список соседей вершины (вершин, в которые ведут рёбра из данной вершины).
+     * @param vertex вершина, для которой нужно найти соседей
+     * @return список соседних вершин
+     */
     @Override
     public List<Integer> getNeighbors(int vertex) {
         List<Integer> neighbors = new ArrayList<>();
@@ -111,35 +146,33 @@ public class IncidenceMatrix implements Graph {
         return neighbors;
     }
 
+    /**
+     * Загружает граф из файла.
+     * Формат файла: каждая строка содержит две вершины, разделенные пробелом.
+     * @param filename имя файла для загрузки
+     * @throws IOException если произошла ошибка чтения файла
+     */
     @Override
     public void readFromFile(String filename) throws IOException {
-        clear();
-        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
-            String line;
-            while((line = reader.readLine()) != null) {
-                line = line.trim();
-                if (line.isEmpty()){
-                    continue;
-                }
-                String[] parts = line.split("\\s+");
-                if(parts.length >= 2) {
-                    try {
-                        int start = Integer.parseInt(parts[0]);
-                        int end = Integer.parseInt(parts[1]);
-                        addEdge(start, end);
-                    } catch (NumberFormatException e) {
-                        System.err.println("Ошибка в строке: " + line);
-                    }
-                }
-            }
-        }
+        ReadFromFile.readGraphFromFile(this, filename);
     }
 
+    /**
+     * Проверяет существование вершины в графе.
+     * @param vertex вершина для проверки
+     * @return true если вершина существует, false в противном случае
+     */
     @Override
     public boolean hasVertex(int vertex) {
         return vertexToIndex.containsKey(vertex);
     }
 
+    /**
+     * Проверяет существование ребра между двумя вершинами.
+     * @param startVertex начальная вершина ребра
+     * @param endVertex конечная вершина ребра
+     * @return true если ребро существует, false в противном случае
+     */
     @Override
     public boolean hasEdge(int startVertex, int endVertex) {
         if (!hasVertex(startVertex) || !hasVertex(endVertex)){
@@ -155,21 +188,39 @@ public class IncidenceMatrix implements Graph {
         return false;
     }
 
+    /**
+     * Возвращает количество вершин в графе.
+     * @return количество вершин
+     */
     @Override
     public int getVertexCount() {
         return vertexCount;
     }
 
+    /**
+     * Возвращает количество рёбер в графе.
+     * @return количество рёбер
+     */
     @Override
     public int getEdgeCount() {
         return edgeCount;
     }
 
+    /**
+     * Возвращает множество всех вершин графа.
+     * @return множество вершин
+     */
     @Override
     public Set<Integer> getVertices() {
         return new LinkedHashSet<>(vertexToIndex.keySet());
     }
 
+    /**
+     * Сравнивает данный граф с другим объектом.
+     * Два графа считаются равными, если они имеют одинаковые множества вершин и рёбер.
+     * @param obj объект для сравнения
+     * @return true если графы равны, false в противном случае
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -186,6 +237,10 @@ public class IncidenceMatrix implements Graph {
         return true;
     }
 
+    /**
+     * Возвращает строковое представление графа в виде матрицы инцидентности.
+     * @return строковое представление графа
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

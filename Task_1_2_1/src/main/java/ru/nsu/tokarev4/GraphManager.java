@@ -1,12 +1,23 @@
 package ru.nsu.tokarev4;
 
-import java.util.*;
-import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+import java.io.IOException;
+import java.util.Set;
 
+/**
+ * Менеджер для работы с графами через консольный интерфейс.
+ * Предоставляет функциональность для создания, загрузки, модификации и анализа графов.
+ */
 public class GraphManager {
     private static Scanner scanner = new Scanner(System.in);
     private static Graph currentGraph = null;
 
+    /**
+     * Главный метод программы, запускающий консольный интерфейс.
+     * @param args аргументы командной строки
+     */
     public static void main(String[] args) {
         System.out.println("=== МЕНЕДЖЕР ГРАФОВ ===");
 
@@ -36,6 +47,9 @@ public class GraphManager {
         }
     }
 
+    /**
+     * Выводит главное меню программы.
+     */
     private static void printMenu() {
         System.out.println("\n=== ГЛАВНОЕ МЕНЮ ===");
         System.out.println("1. Создать пустой граф");
@@ -59,6 +73,9 @@ public class GraphManager {
         }
     }
 
+    /**
+     * Создает новый пустой граф выбранного типа.
+     */
     private static void createGraph() {
         System.out.println("\n=== ВЫБОР ТИПА ГРАФА ===");
         System.out.println("1. Матрица смежности");
@@ -78,6 +95,9 @@ public class GraphManager {
         System.out.println("Создан новый граф: " + currentGraph.getClass().getSimpleName());
     }
 
+    /**
+     * Загружает граф из файла.
+     */
     private static void loadFromFile() {
         if (currentGraph == null) {
             System.out.println("Сначала создайте граф!");
@@ -95,6 +115,9 @@ public class GraphManager {
         }
     }
 
+    /**
+     * Выводит текущий граф в консоль.
+     */
     private static void printGraph() {
         if (currentGraph == null) {
             System.out.println("Граф не создан!");
@@ -103,6 +126,9 @@ public class GraphManager {
         System.out.println("\n" + currentGraph);
     }
 
+    /**
+     * Добавляет вершину в текущий граф.
+     */
     private static void addVertex() {
         if (currentGraph == null) {
             System.out.println("Граф не создан!");
@@ -114,6 +140,9 @@ public class GraphManager {
         System.out.println("Вершина " + vertex + " добавлена.");
     }
 
+    /**
+     * Удаляет вершину из текущего графа.
+     */
     private static void removeVertex() {
         if (currentGraph == null) {
             System.out.println("Граф не создан!");
@@ -129,6 +158,9 @@ public class GraphManager {
         }
     }
 
+    /**
+     * Добавляет ребро в текущий граф.
+     */
     private static void addEdge() {
         if (currentGraph == null) {
             System.out.println("Граф не создан!");
@@ -141,6 +173,9 @@ public class GraphManager {
         System.out.println("Ребро " + start + "→" + end + " добавлено.");
     }
 
+    /**
+     * Удаляет ребро из текущего граф.
+     */
     private static void removeEdge() {
         if (currentGraph == null) {
             System.out.println("Граф не создан!");
@@ -157,6 +192,9 @@ public class GraphManager {
         }
     }
 
+    /**
+     * Показывает соседей указанной вершины.
+     */
     private static void showNeighbors() {
         if (currentGraph == null) {
             System.out.println("Граф не создан!");
@@ -172,6 +210,9 @@ public class GraphManager {
         }
     }
 
+    /**
+     * Выводит информацию о текущем графе.
+     */
     private static void showGraphInfo() {
         if (currentGraph == null) {
             System.out.println("Граф не создан!");
@@ -185,6 +226,9 @@ public class GraphManager {
         System.out.println("Вершины: " + currentGraph.getVertices());
     }
 
+    /**
+     * Сравнивает текущий граф с графом из файла.
+     */
     private static void compareGraphs() {
         if (currentGraph == null) {
             System.out.println("Текущий граф не создан!");
@@ -220,6 +264,9 @@ public class GraphManager {
         }
     }
 
+    /**
+     * Выполняет топологическую сортировку текущего графа.
+     */
     private static void topologicalSort() {
         if (currentGraph == null) {
             System.out.println("Граф не создан!");
@@ -234,44 +281,47 @@ public class GraphManager {
         }
     }
 
+    /**
+     * Изменяет тип представления текущего графа.
+     */
     private static void changeGraphType() {
         if (currentGraph == null) {
             System.out.println("Граф не создан!");
             return;
         }
 
-        // Сохраняем текущий граф во временный файл
-        String tempFile = "temp_graph.txt";
-        try {
-            saveGraphToFile(currentGraph, tempFile);
+        // Сохраняем текущие данные графа
+        Set<Integer> vertices = currentGraph.getVertices();
+        List<int[]> edges = new ArrayList<>();
 
-            // Создаем новый граф нужного типа
-            createGraph();
-
-            // Загружаем данные из временного файла
-            currentGraph.readFromFile(tempFile);
-
-            // Удаляем временный файл
-            new File(tempFile).delete();
-
-            System.out.println("Тип графа изменен!");
-        } catch (IOException e) {
-            System.out.println("Ошибка при смене типа: " + e.getMessage());
-        }
-    }
-
-    private static void saveGraphToFile(Graph graph, String filename) throws IOException {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
-            for (int v1 : graph.getVertices()) {
-                for (int v2 : graph.getVertices()) {
-                    if (graph.hasEdge(v1, v2)) {
-                        writer.println(v1 + " " + v2);
-                    }
+        // Собираем все рёбра текущего графа
+        for (int v1 : vertices) {
+            for (int v2 : vertices) {
+                if (currentGraph.hasEdge(v1, v2)) {
+                    edges.add(new int[]{v1, v2});
                 }
             }
         }
+
+        // Запоминаем текущий тип для сообщения
+        String oldType = currentGraph.getClass().getSimpleName();
+
+        // Создаем новый граф нужного типа
+        createGraph();
+
+        // Восстанавливаем данные в новом графе
+        for (int[] edge : edges) {
+            currentGraph.addEdge(edge[0], edge[1]);
+        }
+
+        System.out.println("Тип графа изменен с " + oldType + " на " + currentGraph.getClass().getSimpleName());
     }
 
+    /**
+     * Получает целочисленный ввод от пользователя.
+     * @param prompt приглашение для ввода
+     * @return введенное целое число
+     */
     private static int getIntInput(String prompt) {
         while (true) {
             try {
