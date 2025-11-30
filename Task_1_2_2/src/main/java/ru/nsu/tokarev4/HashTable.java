@@ -32,38 +32,6 @@ public class HashTable<K, V> implements Iterable<HashTable.Entry<K, V>> {
         V getValue();
     }
 
-    /**
-     * Внутренний класс для узлов цепочки разрешения коллизий.
-     */
-    private static class Node<K, V> implements Entry<K, V> {
-        final K key;
-        V value;
-        final int hash;
-        Node<K, V> next;
-
-        Node(K key, V value, int hash, Node<K, V> next) {
-            this.key = key;
-            this.value = value;
-            this.hash = hash;
-            this.next = next;
-        }
-
-        @Override
-        public K getKey() {
-            return key;
-        }
-
-        @Override
-        public V getValue() {
-            return value;
-        }
-
-        @Override
-        public String toString() {
-            return key + "=" + value;
-        }
-    }
-
     private static final int DEFAULT_CAPACITY = 16;
     private static final double LOAD_FACTOR = 0.75;
 
@@ -391,5 +359,37 @@ public class HashTable<K, V> implements Iterable<HashTable.Entry<K, V>> {
         }
         sb.append("}");
         return sb.toString();
+    }
+
+    /**
+     * Внутренний класс для узлов цепочки разрешения коллизий.
+     */
+    private static class Node<K, V> implements Entry<K, V> {
+        final K key;
+        V value;
+        final int hash;
+        Node<K, V> next;
+
+        Node(K key, V value, int hash, Node<K, V> next) {
+            this.key = key;
+            this.value = value;
+            this.hash = hash;
+            this.next = next;
+        }
+
+        @Override
+        public K getKey() {
+            return key;
+        }
+
+        @Override
+        public V getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return key + "=" + value;
+        }
     }
 }

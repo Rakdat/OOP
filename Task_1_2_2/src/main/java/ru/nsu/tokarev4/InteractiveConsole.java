@@ -8,7 +8,7 @@ import java.util.Scanner;
  * Интерактивная консоль для тестирования хеш-таблицы.
  * Предоставляет пользовательский интерфейс для выполнения операций с хеш-таблицей.
  */
-public class Interactive {
+public class InteractiveConsole {
     private static Scanner scanner = new Scanner(System.in);
     private static HashTable<String, Object> hashTable = new HashTable<>();
 

@@ -4,15 +4,12 @@ package ru.nsu.tokarev4;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ConcurrentModificationException;
-import java.util.Iterator;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Юнит-тесты для класса HashTable
  */
-public class SampleTest {
+public class HashTableTest {
 
     private HashTable<String, Integer> hashTable;
 
