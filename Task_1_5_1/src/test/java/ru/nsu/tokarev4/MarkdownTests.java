@@ -16,6 +16,10 @@ public class MarkdownTests {
     // ========== ТЕСТЫ ДЛЯ ТЕКСТА И ФОРМАТИРОВАНИЯ ==========
 
     @Test
+    public void maintest() {
+        Main.main(new String[]{});
+    }
+    @Test
     public void testBoldText() {
         // Проверяем жирное форматирование
         Text.Bold bold = new Text.Bold("Important");
