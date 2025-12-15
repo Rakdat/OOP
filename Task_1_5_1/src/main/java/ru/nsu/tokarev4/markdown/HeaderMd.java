@@ -1,13 +1,15 @@
-package ru.nsu.tokarev4;
+package ru.nsu.tokarev4.markdown;
 
+import ru.nsu.tokarev4.model.AbstractElement;
 import ru.nsu.tokarev4.model.Element;
+import ru.nsu.tokarev4.model.Header;
 
 /**
  * Класс, представляющий заголовок в формате Markdown.
  * Заголовки в Markdown создаются с помощью символов '#' в начале строки,
  * где количество символов определяет уровень заголовка (от 1 до 6).
  */
-public class Header extends Element {
+public class HeaderMd extends AbstractElement implements Header {
     private final int level;
     private final String text;
 
@@ -17,7 +19,7 @@ public class Header extends Element {
      * @param level уровень заголовка (будет приведен к диапазону 1-6)
      * @param text текст заголовка
      */
-    Header(int level, String text){
+    HeaderMd(int level, String text){
         this.level = Math.max(1, Math.min(6, level));
         this.text = text;
     }
@@ -57,11 +59,11 @@ public class Header extends Element {
          * @return новый объект Header
          * @throws IllegalStateException если текст равен null или пустой строке
          */
-        public Header build() {
+        public HeaderMd build() {
             if (text == null || text.isEmpty()) {
                 throw new IllegalStateException("Header text cannot be empty");
             }
-            return new Header(level, text);
+            return new HeaderMd(level, text);
         }
     }
 }

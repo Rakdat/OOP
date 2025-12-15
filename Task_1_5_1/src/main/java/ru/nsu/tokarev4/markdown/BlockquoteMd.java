@@ -1,6 +1,8 @@
-package ru.nsu.tokarev4;
+package ru.nsu.tokarev4.markdown;
 
+import ru.nsu.tokarev4.model.AbstractElement;
 import ru.nsu.tokarev4.model.Element;
+import ru.nsu.tokarev4.model.Blockquote;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,17 +12,17 @@ import java.util.List;
  * Цитаты в Markdown создаются с помощью символа '>' в начале каждой строки.
  * Может содержать несколько вложенных элементов.
  */
-public class Blockquote extends Element {
+public class BlockquoteMd extends AbstractElement implements Blockquote {
     /** Список элементов, составляющих цитату */
     private final List<Element> elements = new ArrayList<>();
 
-    private Blockquote() {}
+    private BlockquoteMd() {}
 
     /**
      * Добавляет элемент в цитату.
      * Используется внутренне Builder'ом.
      */
-    Blockquote addElement(Element element) {
+    BlockquoteMd addElement(Element element) {
         elements.add(element);
         return this;
     }
@@ -60,12 +62,12 @@ public class Blockquote extends Element {
         /**
          * Создает объект Blockquote на основе добавленных элементов.
          */
-        public Blockquote build() {
-            Blockquote blockquote = new Blockquote();
+        public BlockquoteMd build() {
+            BlockquoteMd blockquoteMd = new BlockquoteMd();
             for (Element element : elements) {
-                blockquote.addElement(element);
+                blockquoteMd.addElement(element);
             }
-            return blockquote;
+            return blockquoteMd;
         }
     }
 }

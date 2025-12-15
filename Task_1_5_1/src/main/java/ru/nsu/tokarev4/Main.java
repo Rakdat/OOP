@@ -1,6 +1,6 @@
 package ru.nsu.tokarev4;
 
-import ru.nsu.tokarev4.markdown.TextMd;
+import ru.nsu.tokarev4.markdown.*;
 
 /**
  * Демонстрационный класс, показывающий использование всех элементов библиотеки Markdown.
@@ -20,13 +20,13 @@ public class Main {
 
         TextMd plainTextMd = new TextMd("Обычный текст");
         TextMd.BoldMd boldMdText = new TextMd.BoldMd("Жирный текст");
-        TextMd.Italic italicText = new TextMd.Italic("Курсивный текст");
-        TextMd.Strikethrough strikeText = new TextMd.Strikethrough("Зачеркнутый текст");
-        TextMd.InlineCode codeText = new TextMd.InlineCode("код");
+        TextMd.ItalicMd italicMdText = new TextMd.ItalicMd("Курсивный текст");
+        TextMd.StrikethroughMd strikeText = new TextMd.StrikethroughMd("Зачеркнутый текст");
+        TextMd.InlineCodeMd codeText = new TextMd.InlineCodeMd("код");
 
         System.out.println("Обычный: " + plainTextMd);
         System.out.println("Жирный: " + boldMdText);
-        System.out.println("Курсив: " + italicText);
+        System.out.println("Курсив: " + italicMdText);
         System.out.println("Зачеркнутый: " + strikeText);
         System.out.println("Встроенный код: " + codeText);
 
@@ -34,39 +34,39 @@ public class Main {
         System.out.println("\nКомбинирование:");
         System.out.println(new TextMd("Текст с " +
                 new TextMd.BoldMd("жирным") + " и " +
-                new TextMd.Italic("курсивным") + " форматированием"));
+                new TextMd.ItalicMd("курсивным") + " форматированием"));
 
         // 2. ЗАГОЛОВКИ
         System.out.println(separator + "2. ЗАГОЛОВКИ (H1-H6):");
 
         for (int level = 1; level <= 6; level++) {
-            Header header = new Header.Builder()
+            HeaderMd headerMd = new HeaderMd.Builder()
                     .withLevel(level)
                     .withText("Заголовок уровня " + level)
                     .build();
-            System.out.println(header);
+            System.out.println(headerMd);
         }
 
         // 3. ССЫЛКИ И ИЗОБРАЖЕНИЯ
         System.out.println(separator + "3. ССЫЛКИ И ИЗОБРАЖЕНИЯ:");
 
-        Link link = new Link.Builder()
+        LinkMd linkMd = new LinkMd.Builder()
                 .withText("Мой репозиторий ООП")
                 .withUrl("https://github.com/Rakdat/OOP")
                 .build();
-        System.out.println("Ссылка: " + link);
+        System.out.println("Ссылка: " + linkMd);
 
-        Image image = new Image.Builder()
-                .withAltText("Логотип Markdown")
-                .withUrl("/images/markdown-logo.png")
+        ImageMd imageMd = new ImageMd.Builder()
+                .withAltText("Логотип NSU")
+                .withUrl("/images/NSU.png")
                 .build();
-        System.out.println("Изображение: " + image);
+        System.out.println("Изображение: " + imageMd);
 
         // 4. СПИСКИ
         System.out.println(separator + "4. СПИСКИ:");
 
         System.out.println("Неупорядоченный список:");
-        ListElement unorderedList = new ListElement.Builder()
+        ListElementMd unorderedList = new ListElementMd.Builder()
                 .withOrdered(false)
                 .addItem(new TextMd("Первый элемент"))
                 .addItem(new TextMd("Второй элемент с " + new TextMd.BoldMd("жирным текстом")))
@@ -77,7 +77,7 @@ public class Main {
         System.out.println(unorderedList);
 
         System.out.println("Упорядоченный список:");
-        ListElement orderedList = new ListElement.Builder()
+        ListElementMd orderedList = new ListElementMd.Builder()
                 .withOrdered(true)
                 .addItem(new TextMd("Шаг первый"))
                 .addItem(new TextMd("Шаг второй"))
@@ -88,26 +88,26 @@ public class Main {
         // 5. ЗАДАЧИ (ЧЕКБОКСЫ)
         System.out.println(separator + "5. ЗАДАЧИ (TODO список):");
 
-        Task completedTask = new Task.Builder()
+        TaskMd completedTaskMd = new TaskMd.Builder()
                 .withText("Изучить паттерн Builder")
                 .withChecked(true)
                 .build();
 
-        Task pendingTask = new Task.Builder()
+        TaskMd pendingTaskMd = new TaskMd.Builder()
                 .withText("Написать unit-тесты")
                 .withChecked(false)
                 .build();
 
-        System.out.println(completedTask);
-        System.out.println(pendingTask);
+        System.out.println(completedTaskMd);
+        System.out.println(pendingTaskMd);
 
         // 6. ЦИТАТЫ
         System.out.println(separator + "6. ЦИТАТЫ:");
 
-        Blockquote quote = new Blockquote.Builder()
+        BlockquoteMd quote = new BlockquoteMd.Builder()
                 .addElement(new TextMd("Это важная цитата"))
                 .addElement(new TextMd("из нескольких строк"))
-                .addElement(new TextMd("с " + new TextMd.Italic("курсивным") + " текстом"))
+                .addElement(new TextMd("с " + new TextMd.ItalicMd("курсивным") + " текстом"))
                 .build();
         System.out.println(quote);
 
@@ -115,14 +115,14 @@ public class Main {
         System.out.println(separator + "7. БЛОКИ КОДА:");
 
         System.out.println("Блок кода на Java:");
-        CodeBlock javaCode = new CodeBlock.Builder()
+        CodeBlockMd javaCode = new CodeBlockMd.Builder()
                 .withLanguage("java")
                 .withCode("public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, Markdown!\");\n    }\n}")
                 .build();
         System.out.println(javaCode);
 
         System.out.println("\nБлок кода без указания языка:");
-        CodeBlock plainCode = new CodeBlock.Builder()
+        CodeBlockMd plainCode = new CodeBlockMd.Builder()
                 .withCode("Это просто текст\nв несколько строк")
                 .build();
         System.out.println(plainCode);
@@ -132,8 +132,8 @@ public class Main {
 
         // Пример из задания (улучшенный)
         System.out.println("Пример из задания:");
-        Table.Builder taskTableBuilder = new Table.Builder()
-                .withAlignments(Table.ALIGN_RIGHT, Table.ALIGN_LEFT)
+        TableMd.Builder taskTableBuilder = new TableMd.Builder()
+                .withAlignments(TableMd.ALIGN_RIGHT, TableMd.ALIGN_LEFT)
                 .withRowLimit(8)
                 .addRow("Index", "Random");
 
@@ -149,27 +149,27 @@ public class Main {
 
         // Большая демонстрационная таблица
         System.out.println("\nДемонстрационная таблица со всеми типами форматирования:");
-        Table demoTable = new Table.Builder()
-                .withAlignments(Table.ALIGN_CENTER, Table.ALIGN_CENTER,
-                        Table.ALIGN_CENTER, Table.ALIGN_CENTER)
+        TableMd demoTableMd = new TableMd.Builder()
+                .withAlignments(TableMd.ALIGN_CENTER, TableMd.ALIGN_CENTER,
+                        TableMd.ALIGN_CENTER, TableMd.ALIGN_CENTER)
                 .addRow("Тип","Результат", "Исходный код")
                 .addRow("Жирный",
                         new TextMd.BoldMd("текст"),
                         "new Text.Bold(\"текст\")")
                 .addRow("Курсив",
-                        new TextMd.Italic("текст"),
+                        new TextMd.ItalicMd("текст"),
                         "new Text.Italic(\"текст\")")
                 .addRow("Зачеркнутый",
-                        new TextMd.Strikethrough("текст"),
+                        new TextMd.StrikethroughMd("текст"),
                         "new Text.Strikethrough(\"текст\")")
                 .addRow("Код",
-                        new TextMd.InlineCode("код"),
+                        new TextMd.InlineCodeMd("код"),
                         "new Text.InlineCode(\"код\")")
                 .addRow("Ссылка",
-                        new Link.Builder().withText("ссылка").withUrl("url").build(),
+                        new LinkMd.Builder().withText("ссылка").withUrl("url").build(),
                         "new Link.Builder()...")
                 .build();
-        System.out.println(demoTable);
+        System.out.println(demoTableMd);
 
     }
 }

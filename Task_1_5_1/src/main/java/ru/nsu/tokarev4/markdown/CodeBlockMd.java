@@ -1,5 +1,7 @@
-package ru.nsu.tokarev4;
+package ru.nsu.tokarev4.markdown;
 
+import ru.nsu.tokarev4.model.AbstractElement;
+import ru.nsu.tokarev4.model.CodeBlock;
 import ru.nsu.tokarev4.model.Element;
 
 /**
@@ -7,7 +9,7 @@ import ru.nsu.tokarev4.model.Element;
  * Блоки кода обрамляются тройными обратными апострофами и могут содержать указание языка программирования
  * для подсветки синтаксиса.
  */
-public class CodeBlock extends Element {
+public class CodeBlockMd extends AbstractElement implements CodeBlock {
     private final String language;
     private final String code;
 
@@ -16,7 +18,7 @@ public class CodeBlock extends Element {
      * @param language язык программирования (может быть пустой строкой)
      * @param code содержимое блока кода
      */
-    CodeBlock(String language, String code) {
+    CodeBlockMd(String language, String code) {
         this.language = language;
         this.code = code;
     }
@@ -62,11 +64,11 @@ public class CodeBlock extends Element {
          * @return новый объект CodeBlock
          * @throws IllegalStateException если code равен null
          */
-        public CodeBlock build() {
+        public CodeBlockMd build() {
             if (code == null) {
                 throw new IllegalStateException("Code cannot be null");
             }
-            return new CodeBlock(language, code);
+            return new CodeBlockMd(language, code);
         }
     }
 }

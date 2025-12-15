@@ -1,12 +1,14 @@
-package ru.nsu.tokarev4;
+package ru.nsu.tokarev4.markdown;
 
+import ru.nsu.tokarev4.model.AbstractElement;
 import ru.nsu.tokarev4.model.Element;
+import ru.nsu.tokarev4.model.Image;
 
 /**
  * Класс, представляющий изображение в формате Markdown.
  * Формат изображений аналогичен формату ссылок, но с восклицательным знаком в начале.
  */
-public class Image extends Element {
+public class ImageMd extends AbstractElement implements Image {
     private final String altText;
     private final String url;
 
@@ -15,7 +17,7 @@ public class Image extends Element {
      * @param altText альтернативный текст (отображается, если изображение не загружено)
      * @param url URL адрес изображения
      */
-    Image(String altText, String url) {
+    ImageMd(String altText, String url) {
         this.altText = altText;
         this.url = url;
     }
@@ -53,11 +55,11 @@ public class Image extends Element {
          * Создает объект Image на основе заданных параметров.
          * Проверяет, что альтернативный текст и URL не равны null.
          */
-        public Image build() {
+        public ImageMd build() {
             if (altText == null || url == null) {
                 throw new IllegalStateException("Alt text and URL must be specified for Image");
             }
-            return new Image(altText, url);
+            return new ImageMd(altText, url);
         }
     }
 }

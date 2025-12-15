@@ -2,7 +2,7 @@ package ru.nsu.tokarev4;
 
 
 import org.junit.jupiter.api.Test;
-import ru.nsu.tokarev4.markdown.TextMd;
+import ru.nsu.tokarev4.markdown.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -30,21 +30,21 @@ public class MarkdownTests {
     @Test
     public void testItalicText() {
         // Проверяем курсивное форматирование
-        TextMd.Italic italic = new TextMd.Italic("Emphasis");
-        assertEquals("*Emphasis*", italic.serialize());
+        TextMd.ItalicMd italicMd = new TextMd.ItalicMd("Emphasis");
+        assertEquals("*Emphasis*", italicMd.serialize());
     }
 
     @Test
     public void testStrikethroughText() {
         // Проверяем зачеркнутый текст
-        TextMd.Strikethrough strike = new TextMd.Strikethrough("Old Price");
+        TextMd.StrikethroughMd strike = new TextMd.StrikethroughMd("Old Price");
         assertEquals("~~Old Price~~", strike.serialize());
     }
 
     @Test
     public void testInlineCode() {
         // Проверяем встроенный код
-        TextMd.InlineCode code = new TextMd.InlineCode("var x = 5");
+        TextMd.InlineCodeMd code = new TextMd.InlineCodeMd("var x = 5");
         assertEquals("`var x = 5`", code.serialize());
     }
 
@@ -65,23 +65,23 @@ public class MarkdownTests {
     @Test
     public void testLinkBuilder() {
         // Проверяем создание ссылки через Builder
-        Link link = new Link.Builder()
+        LinkMd linkMd = new LinkMd.Builder()
                 .withText("Google")
                 .withUrl("https://google.com")
                 .build();
 
-        assertEquals("[Google](https://google.com)", link.serialize());
+        assertEquals("[Google](https://google.com)", linkMd.serialize());
     }
 
     @Test
     public void testImageBuilder() {
         // Проверяем создание изображения через Builder
-        Image image = new Image.Builder()
+        ImageMd imageMd = new ImageMd.Builder()
                 .withAltText("Logo")
                 .withUrl("/images/logo.png")
                 .build();
 
-        assertEquals("![Logo](/images/logo.png)", image.serialize());
+        assertEquals("![Logo](/images/logo.png)", imageMd.serialize());
     }
 
     // ========== ТЕСТЫ ДЛЯ ЗАГОЛОВКОВ ==========
@@ -89,12 +89,12 @@ public class MarkdownTests {
     @Test
     public void testHeaderBuilder() {
         // Проверяем создание заголовков разных уровней
-        Header h1 = new Header.Builder()
+        HeaderMd h1 = new HeaderMd.Builder()
                 .withLevel(1)
                 .withText("Main Title")
                 .build();
 
-        Header h3 = new Header.Builder()
+        HeaderMd h3 = new HeaderMd.Builder()
                 .withLevel(3)
                 .withText("Subtitle")
                 .build();
@@ -106,12 +106,12 @@ public class MarkdownTests {
     @Test
     public void testHeaderLevelLimits() {
         // Проверяем ограничение уровней заголовков (1-6)
-        Header tooHigh = new Header.Builder()
+        HeaderMd tooHigh = new HeaderMd.Builder()
                 .withLevel(10)
                 .withText("Test")
                 .build();
 
-        Header tooLow = new Header.Builder()
+        HeaderMd tooLow = new HeaderMd.Builder()
                 .withLevel(0)
                 .withText("Test")
                 .build();
@@ -125,7 +125,7 @@ public class MarkdownTests {
     @Test
     public void testBlockquoteBuilder() {
         // Проверяем создание цитат с несколькими элементами
-        Blockquote quote = new Blockquote.Builder()
+        BlockquoteMd quote = new BlockquoteMd.Builder()
                 .addElement(new TextMd("First line"))
                 .addElement(new TextMd("Second line"))
                 .build();
@@ -139,7 +139,7 @@ public class MarkdownTests {
     @Test
     public void testCodeBlockBuilder() {
         // Проверяем создание блоков кода с указанием языка
-        CodeBlock code = new CodeBlock.Builder()
+        CodeBlockMd code = new CodeBlockMd.Builder()
                 .withLanguage("java")
                 .withCode("public class Test {\n    // code\n}")
                 .build();
@@ -151,7 +151,7 @@ public class MarkdownTests {
     @Test
     public void testCodeBlockWithoutLanguage() {
         // Проверяем блок кода без указания языка
-        CodeBlock code = new CodeBlock.Builder()
+        CodeBlockMd code = new CodeBlockMd.Builder()
                 .withCode("plain text")
                 .build();
 
@@ -163,7 +163,7 @@ public class MarkdownTests {
     @Test
     public void testUnorderedList() {
         // Проверяем неупорядоченный список
-        ListElement list = new ListElement.Builder()
+        ListElementMd list = new ListElementMd.Builder()
                 .withOrdered(false)
                 .addItem(new TextMd("First"))
                 .addItem(new TextMd("Second"))
@@ -176,7 +176,7 @@ public class MarkdownTests {
     @Test
     public void testOrderedList() {
         // Проверяем упорядоченный список
-        ListElement list = new ListElement.Builder()
+        ListElementMd list = new ListElementMd.Builder()
                 .withOrdered(true)
                 .addItem(new TextMd("First"))
                 .addItem(new TextMd("Second"))
@@ -189,7 +189,7 @@ public class MarkdownTests {
     @Test
     public void testNestedList() {
         // Проверяем вложенные списки
-        ListElement list = new ListElement.Builder()
+        ListElementMd list = new ListElementMd.Builder()
                 .withOrdered(false)
                 .addItem(new TextMd("Level 1"))
                 .addItem(new TextMd("Level 2"), 1)
@@ -205,18 +205,18 @@ public class MarkdownTests {
     @Test
     public void testTaskBuilder() {
         // Проверяем создание задач (чекбоксов)
-        Task task1 = new Task.Builder()
+        TaskMd taskMd1 = new TaskMd.Builder()
                 .withText("Completed task")
                 .withChecked(true)
                 .build();
 
-        Task task2 = new Task.Builder()
+        TaskMd taskMd2 = new TaskMd.Builder()
                 .withText("Pending task")
                 .withChecked(false)
                 .build();
 
-        assertEquals("- [x] Completed task", task1.serialize());
-        assertEquals("- [ ] Pending task", task2.serialize());
+        assertEquals("- [x] Completed task", taskMd1.serialize());
+        assertEquals("- [ ] Pending task", taskMd2.serialize());
     }
 
     // ========== ТЕСТЫ ДЛЯ ТАБЛИЦ ==========
@@ -224,28 +224,28 @@ public class MarkdownTests {
     @Test
     public void testTableBuilderBasic() {
         // Проверяем создание простой таблицы
-        Table table = new Table.Builder()
+        TableMd tableMd = new TableMd.Builder()
                 .addRow("Name", "Age")
                 .addRow("Alice", 25)
                 .addRow("Bob", 30)
                 .build();
 
-        assertTrue(table.serialize().contains("| Name  | Age |"));
-        assertTrue(table.serialize().contains("| Alice | 25  |"));
-        assertTrue(table.serialize().contains("| Bob   | 30  |"));
+        assertTrue(tableMd.serialize().contains("| Name  | Age |"));
+        assertTrue(tableMd.serialize().contains("| Alice | 25  |"));
+        assertTrue(tableMd.serialize().contains("| Bob   | 30  |"));
     }
 
     @Test
     public void testTableWithRowLimit() {
         // Проверяем ограничение количества строк
-        Table table = new Table.Builder()
+        TableMd tableMd = new TableMd.Builder()
                 .withRowLimit(2) // Заголовок + 1 строка данных
                 .addRow("A", "B")
                 .addRow(1, 2)
                 .addRow(3, 4) // Эта строка не должна отобразиться
                 .build();
 
-        String result = table.serialize();
+        String result = tableMd.serialize();
         assertTrue(result.contains("| 1 | 2 |"));
         assertFalse(result.contains("| 3 | 4 |"));
     }
@@ -253,13 +253,13 @@ public class MarkdownTests {
     @Test
     public void testTableWithFormattedCells() {
         // Проверяем таблицу с форматированными ячейками
-        Table table = new Table.Builder()
+        TableMd tableMd = new TableMd.Builder()
                 .addRow("Product", "Price")
                 .addRow("Apple", new TextMd.BoldMd("$1.99"))
-                .addRow("Banana", new TextMd.Italic("$0.99"))
+                .addRow("Banana", new TextMd.ItalicMd("$0.99"))
                 .build();
 
-        String result = table.serialize();
+        String result = tableMd.serialize();
         assertTrue(result.contains("**$1.99**"));
         assertTrue(result.contains("*$0.99*"));
     }

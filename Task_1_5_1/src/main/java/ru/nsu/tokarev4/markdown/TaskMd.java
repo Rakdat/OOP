@@ -1,12 +1,14 @@
-package ru.nsu.tokarev4;
+package ru.nsu.tokarev4.markdown;
 
+import ru.nsu.tokarev4.model.AbstractElement;
 import ru.nsu.tokarev4.model.Element;
+import ru.nsu.tokarev4.model.Task;
 
 /**
  * Класс, представляющий задачу (чекбокс) в формате Markdown.
  * Используется для создания списков задач (TODO-листов).
  */
-public class Task extends Element {
+public class TaskMd extends AbstractElement implements Task {
     private final String text;
     private final boolean checked;
 
@@ -15,7 +17,7 @@ public class Task extends Element {
      * @param text текст задачи
      * @param checked true - задача выполнена, false - задача не выполнена
      */
-    Task(String text, boolean checked) {
+    TaskMd(String text, boolean checked) {
         this.text = text;
         this.checked = checked;
     }
@@ -55,11 +57,11 @@ public class Task extends Element {
          * @return новый объект Task
          * @throws IllegalStateException если текст равен null или пустой строке
          */
-        public Task build() {
+        public TaskMd build() {
             if (text == null || text.isEmpty()) {
                 throw new IllegalStateException("Task text cannot be empty");
             }
-            return new Task(text, checked);
+            return new TaskMd(text, checked);
         }
     }
 }

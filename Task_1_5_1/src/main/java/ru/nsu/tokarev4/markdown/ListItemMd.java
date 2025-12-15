@@ -1,5 +1,6 @@
-package ru.nsu.tokarev4;
+package ru.nsu.tokarev4.markdown;
 
+import ru.nsu.tokarev4.model.AbstractElement;
 import ru.nsu.tokarev4.model.Element;
 
 /**
@@ -9,7 +10,7 @@ import ru.nsu.tokarev4.model.Element;
  * Элемент списка включает содержимое и уровень вложенности,
  * который определяет количество отступов перед элементом.
  */
-class ListItem extends Element {
+class ListItemMd extends AbstractElement {
     private final Element content;
     private final int level;
 
@@ -19,7 +20,7 @@ class ListItem extends Element {
      * @param content содержимое элемента списка
      * @param level уровень вложенности (не может быть меньше 0)
      */
-    ListItem(Element content, int level) {
+    ListItemMd(Element content, int level) {
         this.content = content;
         this.level = Math.max(0, level);
     }

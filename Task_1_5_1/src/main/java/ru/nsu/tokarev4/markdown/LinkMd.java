@@ -1,13 +1,15 @@
-package ru.nsu.tokarev4;
+package ru.nsu.tokarev4.markdown;
 
+import ru.nsu.tokarev4.model.AbstractElement;
 import ru.nsu.tokarev4.model.Element;
+import ru.nsu.tokarev4.model.Link;
 
 /**
  * Класс, представляющий гиперссылку в формате Markdown.
  * Формат: [текст ссылки](URL)
  * Использует паттерн Builder для создания ссылок.
  */
-public class Link extends Element {
+public class LinkMd extends AbstractElement implements Link {
     private final String text;
     private final String url;
 
@@ -16,7 +18,7 @@ public class Link extends Element {
      * @param text отображаемый текст ссылки
      * @param url URL адрес
      */
-    Link(String text, String url) {
+    LinkMd(String text, String url) {
         this.text = text;
         this.url = url;
     }
@@ -55,11 +57,11 @@ public class Link extends Element {
          * @return созданная ссылка
          * @throws IllegalStateException если не указан текст или URL
          */
-        public Link build() {
+        public LinkMd build() {
             if (text == null || url == null) {
                 throw new IllegalStateException("Text and URL must be specified for Link");
             }
-            return new Link(text, url);
+            return new LinkMd(text, url);
         }
     }
 }

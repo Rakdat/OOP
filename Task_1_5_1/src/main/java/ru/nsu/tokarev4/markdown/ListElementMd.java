@@ -1,6 +1,8 @@
-package ru.nsu.tokarev4;
+package ru.nsu.tokarev4.markdown;
 
+import ru.nsu.tokarev4.model.AbstractElement;
 import ru.nsu.tokarev4.model.Element;
+import ru.nsu.tokarev4.model.ListElement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,15 +11,15 @@ import java.util.List;
  * Класс, представляющий список (упорядоченный или неупорядоченный) в формате Markdown.
  * Поддерживает вложенность элементов списка.
  */
-public class ListElement extends Element {
-    private final List<ListItem> items = new ArrayList<>();
+public class ListElementMd extends AbstractElement implements ListElement {
+    private final List<ListItemMd> items = new ArrayList<>();
     private final boolean ordered;
 
     /**
      * Создает список с указанной упорядоченностью.
      * @param ordered true - упорядоченный список, false - неупорядоченный список
      */
-    private ListElement(boolean ordered) {
+    private ListElementMd(boolean ordered) {
         this.ordered = ordered;
     }
 
@@ -28,8 +30,8 @@ public class ListElement extends Element {
      * @param level уровень вложенности (0 - корневой уровень)
      * @return текущий экземпляр ListElement для цепочки вызовов
      */
-    ListElement addItem(Element content, int level) {
-        items.add(new ListItem(content, level));
+    ListElementMd addItem(Element content, int level) {
+        items.add(new ListItemMd(content, level));
         return this;
     }
 
@@ -42,7 +44,7 @@ public class ListElement extends Element {
     public String serialize() {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < items.size(); i++) {
-            ListItem item = items.get(i);
+            ListItemMd item = items.get(i);
             String serialized = item.serialize();
             if (ordered) {
                 serialized = serialized.replaceFirst("- ", (i + 1) + ". ");
@@ -89,8 +91,8 @@ public class ListElement extends Element {
          * Создает объект ListElement на основе заданных параметров.
          * @return новый объект ListElement
          */
-        public ListElement build() {
-            ListElement list = new ListElement(ordered);
+        public ListElementMd build() {
+            ListElementMd list = new ListElementMd(ordered);
             for (Object[] item : items) {
                 list.addItem((Element) item[0], (int) item[1]);
             }

@@ -1,7 +1,8 @@
-package ru.nsu.tokarev4;
+package ru.nsu.tokarev4.markdown;
 
-import ru.nsu.tokarev4.markdown.TextMd;
+import ru.nsu.tokarev4.model.AbstractElement;
 import ru.nsu.tokarev4.model.Element;
+import ru.nsu.tokarev4.model.Table;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
  * и различные типы содержимого ячеек.
  * Использует паттерн Builder для пошагового создания таблицы.
  */
-public class Table extends Element {
+public class TableMd extends AbstractElement implements Table {
     /** Константы для выравнивания по краю */
     public static final int ALIGN_LEFT = 0;
     public static final int ALIGN_CENTER = 1;
@@ -22,7 +23,7 @@ public class Table extends Element {
     private final List<List<Element>> rows = new ArrayList<>();
     private int rowLimit = -1;
 
-    private Table() {}
+    private TableMd() {}
 
     /**
      * Вычисляет максимальную ширину для каждого столбца таблицы.
@@ -76,7 +77,6 @@ public class Table extends Element {
 
     /**
      * Создает разделительную строку (separator) для указанного типа выравнивания.
-     *
      * Разделительная строка в Markdown таблицах определяет выравнивание столбца:
      * ALIGN_LEFT: :--- (двоеточие слева)
      * ALIGN_CENTER: :---: (двоеточия с обеих сторон)
@@ -173,7 +173,7 @@ public class Table extends Element {
      * </pre>
      */
     public static class Builder {
-        private final Table table = new Table();
+        private final TableMd tableMd = new TableMd();
         private boolean headerAdded = false;
 
         /**
@@ -182,9 +182,9 @@ public class Table extends Element {
          * @return текущий экземпляр Builder для цепочки вызовов
          */
         public Builder withAlignments(int... alignments) {
-            table.alignments = new ArrayList<>();
+            tableMd.alignments = new ArrayList<>();
             for (int alignment : alignments) {
-                table.alignments.add(alignment);
+                tableMd.alignments.add(alignment);
             }
             return this;
         }
@@ -193,7 +193,7 @@ public class Table extends Element {
          * Устанавливает ограничение на количество отображаемых строк.
          */
         public Builder withRowLimit(int rowLimit) {
-            table.rowLimit = rowLimit;
+            tableMd.rowLimit = rowLimit;
             return this;
         }
 
@@ -206,10 +206,10 @@ public class Table extends Element {
                 row.add(createElement(cell));
             }
             if (!headerAdded) {
-                table.rows.add(0, row);
+                tableMd.rows.add(0, row);
                 headerAdded = true;
             } else {
-                table.rows.add(row);
+                tableMd.rows.add(row);
             }
             return this;
         }
@@ -237,8 +237,8 @@ public class Table extends Element {
          * Завершает процесс построения и возвращает готовую таблицу.
          * @return полностью сконфигурированный объект Table
          */
-        public Table build() {
-            return table;
+        public TableMd build() {
+            return tableMd;
         }
     }
 }
