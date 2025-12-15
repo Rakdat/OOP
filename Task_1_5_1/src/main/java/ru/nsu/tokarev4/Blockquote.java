@@ -1,5 +1,7 @@
 package ru.nsu.tokarev4;
 
+import ru.nsu.tokarev4.model.Element;
+
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,5 +1,7 @@
 package ru.nsu.tokarev4;
 
+import ru.nsu.tokarev4.model.Element;
+
 /**
  * Класс, представляющий гиперссылку в формате Markdown.
  * Формат: [текст ссылки](URL)

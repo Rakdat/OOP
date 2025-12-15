@@ -1,5 +1,7 @@
 package ru.nsu.tokarev4;
 
+import ru.nsu.tokarev4.model.Element;
+
 /**
  * Класс, представляющий заголовок в формате Markdown.
  * Заголовки в Markdown создаются с помощью символов '#' в начале строки,

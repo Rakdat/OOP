@@ -1,5 +1,7 @@
 package ru.nsu.tokarev4;
 
+import ru.nsu.tokarev4.markdown.TextMd;
+
 /**
  * Демонстрационный класс, показывающий использование всех элементов библиотеки Markdown.
  */
@@ -16,23 +18,23 @@ public class Main {
         System.out.println("\n1. ТЕКСТ И ФОРМАТИРОВАНИЕ:");
         System.out.println("-".repeat(30));
 
-        Text plainText = new Text("Обычный текст");
-        Text.Bold boldText = new Text.Bold("Жирный текст");
-        Text.Italic italicText = new Text.Italic("Курсивный текст");
-        Text.Strikethrough strikeText = new Text.Strikethrough("Зачеркнутый текст");
-        Text.InlineCode codeText = new Text.InlineCode("код");
+        TextMd plainTextMd = new TextMd("Обычный текст");
+        TextMd.BoldMd boldMdText = new TextMd.BoldMd("Жирный текст");
+        TextMd.Italic italicText = new TextMd.Italic("Курсивный текст");
+        TextMd.Strikethrough strikeText = new TextMd.Strikethrough("Зачеркнутый текст");
+        TextMd.InlineCode codeText = new TextMd.InlineCode("код");
 
-        System.out.println("Обычный: " + plainText);
-        System.out.println("Жирный: " + boldText);
+        System.out.println("Обычный: " + plainTextMd);
+        System.out.println("Жирный: " + boldMdText);
         System.out.println("Курсив: " + italicText);
         System.out.println("Зачеркнутый: " + strikeText);
         System.out.println("Встроенный код: " + codeText);
 
         // Комбинированное форматирование
         System.out.println("\nКомбинирование:");
-        System.out.println(new Text("Текст с " +
-                new Text.Bold("жирным") + " и " +
-                new Text.Italic("курсивным") + " форматированием"));
+        System.out.println(new TextMd("Текст с " +
+                new TextMd.BoldMd("жирным") + " и " +
+                new TextMd.Italic("курсивным") + " форматированием"));
 
         // 2. ЗАГОЛОВКИ
         System.out.println(separator + "2. ЗАГОЛОВКИ (H1-H6):");
@@ -66,20 +68,20 @@ public class Main {
         System.out.println("Неупорядоченный список:");
         ListElement unorderedList = new ListElement.Builder()
                 .withOrdered(false)
-                .addItem(new Text("Первый элемент"))
-                .addItem(new Text("Второй элемент с " + new Text.Bold("жирным текстом")))
-                .addItem(new Text("Вложенный элемент"), 1)
-                .addItem(new Text("Еще более вложенный"), 2)
-                .addItem(new Text("Третий элемент"))
+                .addItem(new TextMd("Первый элемент"))
+                .addItem(new TextMd("Второй элемент с " + new TextMd.BoldMd("жирным текстом")))
+                .addItem(new TextMd("Вложенный элемент"), 1)
+                .addItem(new TextMd("Еще более вложенный"), 2)
+                .addItem(new TextMd("Третий элемент"))
                 .build();
         System.out.println(unorderedList);
 
         System.out.println("Упорядоченный список:");
         ListElement orderedList = new ListElement.Builder()
                 .withOrdered(true)
-                .addItem(new Text("Шаг первый"))
-                .addItem(new Text("Шаг второй"))
-                .addItem(new Text("Шаг третий"))
+                .addItem(new TextMd("Шаг первый"))
+                .addItem(new TextMd("Шаг второй"))
+                .addItem(new TextMd("Шаг третий"))
                 .build();
         System.out.println(orderedList);
 
@@ -103,9 +105,9 @@ public class Main {
         System.out.println(separator + "6. ЦИТАТЫ:");
 
         Blockquote quote = new Blockquote.Builder()
-                .addElement(new Text("Это важная цитата"))
-                .addElement(new Text("из нескольких строк"))
-                .addElement(new Text("с " + new Text.Italic("курсивным") + " текстом"))
+                .addElement(new TextMd("Это важная цитата"))
+                .addElement(new TextMd("из нескольких строк"))
+                .addElement(new TextMd("с " + new TextMd.Italic("курсивным") + " текстом"))
                 .build();
         System.out.println(quote);
 
@@ -138,7 +140,7 @@ public class Main {
         for (int i = 1; i <= 5; i++) {
             final int value = (int) (Math.random() * 10);
             if (value > 5) {
-                taskTableBuilder.addRow(i, new Text.Bold(String.valueOf(value)));
+                taskTableBuilder.addRow(i, new TextMd.BoldMd(String.valueOf(value)));
             } else {
                 taskTableBuilder.addRow(i, value);
             }
@@ -152,16 +154,16 @@ public class Main {
                         Table.ALIGN_CENTER, Table.ALIGN_CENTER)
                 .addRow("Тип","Результат", "Исходный код")
                 .addRow("Жирный",
-                        new Text.Bold("текст"),
+                        new TextMd.BoldMd("текст"),
                         "new Text.Bold(\"текст\")")
                 .addRow("Курсив",
-                        new Text.Italic("текст"),
+                        new TextMd.Italic("текст"),
                         "new Text.Italic(\"текст\")")
                 .addRow("Зачеркнутый",
-                        new Text.Strikethrough("текст"),
+                        new TextMd.Strikethrough("текст"),
                         "new Text.Strikethrough(\"текст\")")
                 .addRow("Код",
-                        new Text.InlineCode("код"),
+                        new TextMd.InlineCode("код"),
                         "new Text.InlineCode(\"код\")")
                 .addRow("Ссылка",
                         new Link.Builder().withText("ссылка").withUrl("url").build(),

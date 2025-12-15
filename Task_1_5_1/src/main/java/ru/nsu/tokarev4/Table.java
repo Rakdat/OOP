@@ -1,5 +1,8 @@
 package ru.nsu.tokarev4;
 
+import ru.nsu.tokarev4.markdown.TextMd;
+import ru.nsu.tokarev4.model.Element;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -222,11 +225,11 @@ public class Table extends Element {
             if (cell instanceof Element) {
                 return (Element) cell;
             } else if (cell instanceof Integer) {
-                return new Text(String.valueOf(cell));
+                return new TextMd(String.valueOf(cell));
             } else if (cell instanceof String) {
-                return new Text((String) cell);
+                return new TextMd((String) cell);
             } else {
-                return new Text(cell.toString());
+                return new TextMd(cell.toString());
             }
         }
 

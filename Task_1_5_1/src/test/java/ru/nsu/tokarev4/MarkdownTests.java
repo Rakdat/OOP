@@ -2,6 +2,7 @@ package ru.nsu.tokarev4;
 
 
 import org.junit.jupiter.api.Test;
+import ru.nsu.tokarev4.markdown.TextMd;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -22,41 +23,41 @@ public class MarkdownTests {
     @Test
     public void testBoldText() {
         // Проверяем жирное форматирование
-        Text.Bold bold = new Text.Bold("Important");
-        assertEquals("**Important**", bold.serialize());
+        TextMd.BoldMd boldMd = new TextMd.BoldMd("Important");
+        assertEquals("**Important**", boldMd.serialize());
     }
 
     @Test
     public void testItalicText() {
         // Проверяем курсивное форматирование
-        Text.Italic italic = new Text.Italic("Emphasis");
+        TextMd.Italic italic = new TextMd.Italic("Emphasis");
         assertEquals("*Emphasis*", italic.serialize());
     }
 
     @Test
     public void testStrikethroughText() {
         // Проверяем зачеркнутый текст
-        Text.Strikethrough strike = new Text.Strikethrough("Old Price");
+        TextMd.Strikethrough strike = new TextMd.Strikethrough("Old Price");
         assertEquals("~~Old Price~~", strike.serialize());
     }
 
     @Test
     public void testInlineCode() {
         // Проверяем встроенный код
-        Text.InlineCode code = new Text.InlineCode("var x = 5");
+        TextMd.InlineCode code = new TextMd.InlineCode("var x = 5");
         assertEquals("`var x = 5`", code.serialize());
     }
 
     @Test
     public void testTextEquality() {
         // Проверяем сравнение элементов текста
-        Text text1 = new Text("Same");
-        Text text2 = new Text("Same");
-        Text text3 = new Text("Different");
+        TextMd textMd1 = new TextMd("Same");
+        TextMd textMd2 = new TextMd("Same");
+        TextMd textMd3 = new TextMd("Different");
 
-        assertTrue(text1.equals(text2));
-        assertFalse(text1.equals(text3));
-        assertTrue(text1.equals(text1)); // рефлексивность
+        assertTrue(textMd1.equals(textMd2));
+        assertFalse(textMd1.equals(textMd3));
+        assertTrue(textMd1.equals(textMd1)); // рефлексивность
     }
 
     // ========== ТЕСТЫ ДЛЯ ССЫЛОК И ИЗОБРАЖЕНИЙ ==========
@@ -125,8 +126,8 @@ public class MarkdownTests {
     public void testBlockquoteBuilder() {
         // Проверяем создание цитат с несколькими элементами
         Blockquote quote = new Blockquote.Builder()
-                .addElement(new Text("First line"))
-                .addElement(new Text("Second line"))
+                .addElement(new TextMd("First line"))
+                .addElement(new TextMd("Second line"))
                 .build();
 
         String expected = "> First line\n> Second line";
@@ -164,8 +165,8 @@ public class MarkdownTests {
         // Проверяем неупорядоченный список
         ListElement list = new ListElement.Builder()
                 .withOrdered(false)
-                .addItem(new Text("First"))
-                .addItem(new Text("Second"))
+                .addItem(new TextMd("First"))
+                .addItem(new TextMd("Second"))
                 .build();
 
         String expected = "- First\n- Second\n";
@@ -177,8 +178,8 @@ public class MarkdownTests {
         // Проверяем упорядоченный список
         ListElement list = new ListElement.Builder()
                 .withOrdered(true)
-                .addItem(new Text("First"))
-                .addItem(new Text("Second"))
+                .addItem(new TextMd("First"))
+                .addItem(new TextMd("Second"))
                 .build();
 
         String expected = "1. First\n2. Second\n";
@@ -190,9 +191,9 @@ public class MarkdownTests {
         // Проверяем вложенные списки
         ListElement list = new ListElement.Builder()
                 .withOrdered(false)
-                .addItem(new Text("Level 1"))
-                .addItem(new Text("Level 2"), 1)
-                .addItem(new Text("Level 3"), 2)
+                .addItem(new TextMd("Level 1"))
+                .addItem(new TextMd("Level 2"), 1)
+                .addItem(new TextMd("Level 3"), 2)
                 .build();
 
         String expected = "- Level 1\n  - Level 2\n    - Level 3\n";
@@ -254,8 +255,8 @@ public class MarkdownTests {
         // Проверяем таблицу с форматированными ячейками
         Table table = new Table.Builder()
                 .addRow("Product", "Price")
-                .addRow("Apple", new Text.Bold("$1.99"))
-                .addRow("Banana", new Text.Italic("$0.99"))
+                .addRow("Apple", new TextMd.BoldMd("$1.99"))
+                .addRow("Banana", new TextMd.Italic("$0.99"))
                 .build();
 
         String result = table.serialize();

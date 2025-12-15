@@ -1,14 +1,17 @@
-package ru.nsu.tokarev4;
+package ru.nsu.tokarev4.markdown;
+
+import ru.nsu.tokarev4.model.AbstractElement;
+import ru.nsu.tokarev4.model.text.Text;
 
 /**
  * Классы для работы с текстом и его форматированием в Markdown.
  */
-public class Text extends Element {
+public class TextMd extends AbstractElement implements Text {
     protected String content;
     /**
      * Создает новый текстовый элемент.
      */
-    public Text(String content) {
+    public TextMd(String content) {
         this.content = content;
     }
 
@@ -20,8 +23,8 @@ public class Text extends Element {
     /**
      * Жирный текст
      */
-    public static class Bold extends Text {
-        public Bold(String content) {
+    public static class BoldMd extends TextMd implements Bold {
+        public BoldMd(String content) {
             super(content);
         }
 
@@ -34,7 +37,7 @@ public class Text extends Element {
     /**
      * Курсивный текст
      */
-    public static class Italic extends Text {
+    public static class Italic extends TextMd {
         public Italic(String content) {
             super(content);
         }
@@ -48,7 +51,7 @@ public class Text extends Element {
     /**
      * Зачеркнутый текст
      */
-    public static class Strikethrough extends Text {
+    public static class Strikethrough extends TextMd {
         public Strikethrough(String content) {
             super(content);
         }
@@ -62,7 +65,7 @@ public class Text extends Element {
     /**
      * Встроенный код
      */
-    public static class InlineCode extends Text {
+    public static class InlineCode extends TextMd {
         public InlineCode(String content) {
             super(content);
         }
