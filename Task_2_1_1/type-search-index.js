@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"ru.nsu.tokarev4","l":"InOneLine"},{"p":"ru.nsu.tokarev4","l":"MultiThreads"},{"p":"ru.nsu.tokarev4","l":"ParallelStream"},{"p":"ru.nsu.tokarev4","l":"SimpleNumbers"},{"p":"ru.nsu.tokarev4","l":"SimpleOrNot"}];updateSearchResults();
