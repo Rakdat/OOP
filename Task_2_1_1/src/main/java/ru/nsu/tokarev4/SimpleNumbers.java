@@ -43,25 +43,53 @@ public class SimpleNumbers {
                      numbers.add(in.nextInt());
                  }
                  in.close();
+                 System.out.println(file);
              }
-             long startline = System.currentTimeMillis();
-             boolean line = InOneLine.oneLine(numbers);
-             long endline = System.currentTimeMillis();
-             System.out.println("Однопоточное выполнение, результат: " + line + " время: " + (endline - startline) + "\n");
 
-             int[] treadcnt = {1, 2, 4, 8, 12, 16, 32, 64};
+             long[] oneline = new long[10];
+
+             for (int i  = 0; i < 100; i++) {
+                 long startline = System.currentTimeMillis();
+                 boolean line = InOneLine.oneLine(numbers);
+                 long endline = System.currentTimeMillis();
+
+                 oneline[i / 10] += endline - startline;
+             }
+
+             System.out.println("Среднее время 10 тестов однопоточного решения: ");
+             for (int i = 0; i < 10; i++){
+                 System.out.print(oneline[i]/10 + " ");
+             }
+             System.out.println();
+             int ind = 0;
+             long[][] multitest = new long[7][10];
+             int[] treadcnt = {1, 2, 4, 8, 16, 32, 64};
              for (int i : treadcnt) {
-                 long start = System.currentTimeMillis();
-                 boolean multi = MultiThreads.multiThreads(i, numbers);
-                 long end = System.currentTimeMillis();
-                 System.out.println("Многопоточное выполнение на " + i + " потоках, результат: " + multi + ", время: " + (end - start));
+                 for (int j = 0; j < 100; j++) {
+                     long start = System.currentTimeMillis();
+                     boolean multi = MultiThreads.multiThreads(i, numbers);
+                     long end = System.currentTimeMillis();
+                     multitest[(int)(Math.log((double)i)/Math.log(2))][j/10] += end - start;
+                 }
+                 System.out.println("\nСреднее время 10 тестов решения на " + i + " потоках: ");
+                 for(int k = 0; k < 10; k++) {
+                     System.out.print(multitest[ind][k]/10 + " ");
+                 }
+                 ind++;
              }
 
-             long paralstart = System.currentTimeMillis();
-             boolean paralel = ParallelStream.paralelStream(numbers);
-             long paralend = System.currentTimeMillis();
-
-             System.out.println("\nParallelStream, результат: " + paralel + ", время: " + (paralend - paralstart ));
+             System.out.println("\n");
+             long[] paral = new long[10];
+             for (int i = 0; i< 100; i++) {
+                 long paralstart = System.currentTimeMillis();
+                 boolean paralel = ParallelStream.paralelStream(numbers);
+                 long paralend = System.currentTimeMillis();
+                 paral[i/10] += paralend - paralstart;
+             }
+            System.out.println("Среднее время 10 тестов решения в ParallelStream потоках: ");
+            for(int k = 0; k < 10; k++) {
+                System.out.print(paral[k]/10 + " ");
+            }
         }
         catch (FileNotFoundException e){
             System.out.print("Файл не был найден");
