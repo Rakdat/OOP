@@ -1,9 +1,9 @@
 package ru.nsu.tokarev4;
 
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -18,13 +18,14 @@ public class SimpleNumbers {
     /**
      * Точка входа в приложение.
      * Осуществляет чтение файла, запуск тестов и вывод результатов замеров времени.
-     * * @param args аргументы командной строки (не используются)
+     * @param args аргументы командной строки
      * @throws FileNotFoundException если файл с числами не найден
      */
     public static void main(String[] args) throws FileNotFoundException {
-        ArrayList<Integer> numbers= new ArrayList<>();
+        ArrayList<Integer> numbers = new ArrayList<>();
         Scanner in;
         String file = "";
+
         if (args.length == 0) {
             in = new Scanner(System.in);
             System.out.println("Введите название файла с числами:");
@@ -35,64 +36,120 @@ public class SimpleNumbers {
             }
         }
 
-        try{
-             if (args.length == 0) {
-                 in = new Scanner(new File(file));
+        try {
+            if (args.length == 0) {
+                in = new Scanner(new File(file));
+                while (in.hasNextInt()) {
+                    numbers.add(in.nextInt());
+                }
+                in.close();
+                //System.out.println(file); // Можно закомментировать, чтобы не мешало питону читать цифры
+            }
 
-                 while (in.hasNextInt()) {
-                     numbers.add(in.nextInt());
-                 }
-                 in.close();
-                 System.out.println(file);
-             }
+            // --- 1. ОДИН ПОТОК ---
+            long[] oneline = new long[200];
+            for (int i  = 0; i < 200; i++) {
+                long startline = System.nanoTime();
+                boolean line = Sequential.oneLine(numbers);
+                long endline = System.nanoTime();
+                oneline[i] = endline - startline;
+            }
+            printStats(oneline);
 
-             long[] oneline = new long[10];
+            // --- 2. МНОГОПОТОЧНОСТЬ ---
+            int[] treadcnt = {1, 2, 4, 8, 16, 32, 64};
+            for (int i : treadcnt) {
+                long[] multitest = new long[200];
+                for (int j = 0; j < 200; j++) {
+                    long start = System.nanoTime();
+                    boolean multi = MultiThreads.multiThreads(i, numbers);
+                    long end = System.nanoTime();
+                    multitest[j] = end - start;
+                }
+                printStats(multitest);
+            }
 
-             for (int i  = 0; i < 100; i++) {
-                 long startline = System.currentTimeMillis();
-                 boolean line = InOneLine.oneLine(numbers);
-                 long endline = System.currentTimeMillis();
+            // --- 3. PARALLEL STREAM ---
+            long[] paral = new long[200];
+            for (int i = 0; i < 200; i++) {
+                long paralstart = System.nanoTime();
+                boolean paralel = ParallelStream.paralelStream(numbers);
+                long paralend = System.nanoTime();
+                paral[i] = paralend - paralstart;
+            }
+            printStats(paral);
 
-                 oneline[i / 10] += endline - startline;
-             }
+        } catch (FileNotFoundException e){
+            System.out.println("Файл не был найден");
+        }
+    }
 
-             System.out.println("Среднее время 10 тестов однопоточного решения: ");
-             for (int i = 0; i < 10; i++){
-                 System.out.print(oneline[i]/10 + " ");
-             }
-             System.out.println();
-             int ind = 0;
-             long[][] multitest = new long[7][10];
-             int[] treadcnt = {1, 2, 4, 8, 16, 32, 64};
-             for (int i : treadcnt) {
-                 for (int j = 0; j < 100; j++) {
-                     long start = System.currentTimeMillis();
-                     boolean multi = MultiThreads.multiThreads(i, numbers);
-                     long end = System.currentTimeMillis();
-                     multitest[(int)(Math.log((double)i)/Math.log(2))][j/10] += end - start;
-                 }
-                 System.out.println("\nСреднее время 10 тестов решения на " + i + " потоках: ");
-                 for(int k = 0; k < 10; k++) {
-                     System.out.print(multitest[ind][k]/10 + " ");
-                 }
-                 ind++;
-             }
+    /**
+     * Вспомогательный метод для расчета и вывода статистики.
+     * Разбивает результаты на 10 корзин, отбрасывает 9-ю корзину (выбросы/прогрев),
+     * находит самую частую среди оставшихся и считает по ней среднее.
+     * Выводит результат в формате: MAX AVG MIN
+     */
+    private static void printStats(long[] times) {
+        long absoluteMin = Arrays.stream(times).min().getAsLong();
+        long absoluteMax = Arrays.stream(times).max().getAsLong();
 
-             System.out.println("\n");
-             long[] paral = new long[10];
-             for (int i = 0; i< 100; i++) {
-                 long paralstart = System.currentTimeMillis();
-                 boolean paralel = ParallelStream.paralelStream(numbers);
-                 long paralend = System.currentTimeMillis();
-                 paral[i/10] += paralend - paralstart;
-             }
-            System.out.println("Среднее время 10 тестов решения в ParallelStream потоках: ");
-            for(int k = 0; k < 10; k++) {
-                System.out.print(paral[k]/10 + " ");
+        // Используем double для точности
+        double partOfDelta = (absoluteMax - absoluteMin) / 10.0;
+
+        long[][] parts = new long[10][2];
+
+        long errMin = Long.MAX_VALUE;
+        long errMax = Long.MIN_VALUE;
+
+        for (long time : times) {
+            int bucket;
+            if (partOfDelta == 0) {
+                bucket = 0;
+            } else {
+                bucket = (int) ((time - absoluteMin) / partOfDelta);
+            }
+
+            // Защита от выхода за границы массива
+            if (bucket >= 10) {
+                bucket = 9;
+            }
+
+            parts[bucket][0] += time;
+            parts[bucket][1]++;
+
+            // Если результат НЕ попал в корзину с аномально долгими тестами (9),
+            // учитываем его для усов погрешности
+            if (bucket != 9) {
+                if (time < errMin) errMin = time;
+                if (time > errMax) errMax = time;
             }
         }
-        catch (FileNotFoundException e){
-            System.out.print("Файл не был найден");
+
+        // Резерв на случай, если абсолютно все тесты улетели в 9-ю корзину
+        if (errMin == Long.MAX_VALUE) errMin = absoluteMin;
+        if (errMax == Long.MIN_VALUE) errMax = absoluteMax;
+
+        // Ищем корзину с наибольшим количеством элементов СРЕДИ ОСТАВШИХСЯ (от 0 до 8)
+        int bestBucketIndex = 0;
+        long maxCountInBucket = -1;
+
+        for (int i = 0; i < 9; i++) {
+            if (parts[i][1] > maxCountInBucket) {
+                maxCountInBucket = parts[i][1];
+                bestBucketIndex = i;
+            }
         }
+
+        // Считаем среднее для самой частой корзины
+        long avg = 0;
+        if (parts[bestBucketIndex][1] > 0) {
+            avg = parts[bestBucketIndex][0] / parts[bestBucketIndex][1];
+        } else {
+            avg = absoluteMin;
+        }
+
+        // Выводим результаты ровно по одной строке для каждого теста
+        System.out.println(errMax + " " + avg + " " + errMin);
     }
 }

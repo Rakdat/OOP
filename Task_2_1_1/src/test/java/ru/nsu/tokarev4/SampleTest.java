@@ -44,17 +44,17 @@ class SampleTest {
 
     @Test
     void singleprimes() {
-        assertTrue(InOneLine.oneLine(allprimes));
+        assertTrue(Sequential.oneLine(allprimes));
     }
 
     @Test
     void singleonenotprime() {
-        assertFalse(InOneLine.oneLine(onenotprime));
+        assertFalse(Sequential.oneLine(onenotprime));
     }
 
     @Test
     void singleallnotprime() {
-        assertFalse(InOneLine.oneLine(allnotprimes));
+        assertFalse(Sequential.oneLine(allnotprimes));
     }
 
 
@@ -150,10 +150,10 @@ class SampleTest {
 
     @Test
     void checkcheckprime() {
-        assertFalse(SimpleOrNot.checker(-14));
-        assertFalse(SimpleOrNot.checker(0));
-        assertTrue(SimpleOrNot.checker(2));
-        assertFalse(SimpleOrNot.checker(9));
-        assertFalse(SimpleOrNot.checker(1000007));
+        assertFalse(SimpleOrNot.isprime(-14));
+        assertFalse(SimpleOrNot.isprime(0));
+        assertTrue(SimpleOrNot.isprime(2));
+        assertFalse(SimpleOrNot.isprime(9));
+        assertFalse(SimpleOrNot.isprime(1000007));
     }
 }

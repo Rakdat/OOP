@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Класс для однопоточной проверки списка чисел.
  */
-public class InOneLine {
+public class Sequential {
 
     /**
      * Проверяет список чисел на простоту в текущем потоке.
@@ -15,7 +15,7 @@ public class InOneLine {
     public static boolean oneLine(ArrayList<Integer> numbers){
         boolean fl = true;
         for (Integer number : numbers) {
-            fl &= SimpleOrNot.checker(number);
+            fl &= SimpleOrNot.isprime(number);
         }
         return fl;
     }

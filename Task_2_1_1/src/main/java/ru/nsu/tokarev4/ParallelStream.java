@@ -13,6 +13,6 @@ public class ParallelStream {
      * @return результат проверки всех чисел на простоту
      */
     public static  boolean paralelStream(ArrayList<Integer> numbers){
-        return numbers.parallelStream().allMatch(SimpleOrNot::checker);
+        return numbers.parallelStream().allMatch(SimpleOrNot::isprime);
     }
 }

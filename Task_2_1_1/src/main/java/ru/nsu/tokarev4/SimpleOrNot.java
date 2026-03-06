@@ -14,7 +14,7 @@ public class SimpleOrNot {
      * @param number число для проверки
      * @return true, если число простое; false в противном случае
      */
-    public static boolean checker(int number) {
+    public static boolean isprime(int number) {
         if (number <= 1){
             return false;
         }

@@ -43,7 +43,7 @@ public class MultiThreads {
             final int end = ind;
             Thread thread = new Thread(() ->{
                 for (int j = st; j < end; j++){
-                    res[j] = SimpleOrNot.checker(numbers.get(j));
+                    res[j] = SimpleOrNot.isprime(numbers.get(j));
                 }
             });
 
