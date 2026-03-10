@@ -47,8 +47,8 @@ public class SimpleNumbers {
             }
 
             // --- 1. ОДИН ПОТОК ---
-            long[] oneline = new long[200];
-            for (int i  = 0; i < 200; i++) {
+            long[] oneline = new long[500];
+            for (int i  = 0; i < 500; i++) {
                 long startline = System.nanoTime();
                 boolean line = Sequential.oneLine(numbers);
                 long endline = System.nanoTime();
@@ -59,8 +59,8 @@ public class SimpleNumbers {
             // --- 2. МНОГОПОТОЧНОСТЬ ---
             int[] treadcnt = {1, 2, 4, 8, 16, 32, 64};
             for (int i : treadcnt) {
-                long[] multitest = new long[200];
-                for (int j = 0; j < 200; j++) {
+                long[] multitest = new long[500];
+                for (int j = 0; j < 500; j++) {
                     long start = System.nanoTime();
                     boolean multi = MultiThreads.multiThreads(i, numbers);
                     long end = System.nanoTime();
@@ -70,8 +70,8 @@ public class SimpleNumbers {
             }
 
             // --- 3. PARALLEL STREAM ---
-            long[] paral = new long[200];
-            for (int i = 0; i < 200; i++) {
+            long[] paral = new long[500];
+            for (int i = 0; i < 500; i++) {
                 long paralstart = System.nanoTime();
                 boolean paralel = ParallelStream.paralelStream(numbers);
                 long paralend = System.nanoTime();
