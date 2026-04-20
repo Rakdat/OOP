@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"ru.nsu.tokarev4","l":"Baker"},{"p":"ru.nsu.tokarev4","l":"Courier"},{"p":"ru.nsu.tokarev4","l":"CustomQueue"},{"p":"ru.nsu.tokarev4","l":"Order"},{"p":"ru.nsu.tokarev4","l":"StartPiz"}];updateSearchResults();
