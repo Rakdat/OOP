@@ -5,12 +5,12 @@ public class PizUtil {
     /**
      * Рассчитывает игровое время на основе прошедших миллисекунд от начала смены.
      *
-     * @param deliveryTime время доставки (если 0, выводит текущее игровое время).
+     * @param time время доставки (если 0, выводит текущее игровое время).
      * @return отформатированная строка со временем.
      */
 
-    public static String getGameTime(int deliveryTime) {
-        return (deliveryTime / ONE_MINUTE_IN_MILLIS + " мин");
+    public static String getTime(int time) {
+        return (time / ONE_MINUTE_IN_MILLIS + " мин");
     }
 
     public static String getGameTime(long startTime, long timeNow) {

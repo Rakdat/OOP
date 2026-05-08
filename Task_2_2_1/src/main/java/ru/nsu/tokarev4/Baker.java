@@ -1,7 +1,5 @@
 package ru.nsu.tokarev4;
 
-import static ru.nsu.tokarev4.PizUtil.getGameTime;
-
 /**
  * Класс, описывающий работу пекаря.
  * Пекарь берет заказ из очереди, готовит его случайное время
@@ -34,7 +32,7 @@ public class Baker implements Runnable {
                 // 2. Генерируем уникальное время готовки для конкретно этого заказа от 200 до 800 мс
                 int cookingTime = 200 + (int) (Math.random() * 601);
 
-                System.out.println("[" + order.getId() + "] Готовится (Время готовки: " + getGameTime(cookingTime) + ")");
+                System.out.println("[" + order.getId() + "] Готовится (Время готовки: " + PizUtil.getTime(cookingTime) + ")");
 
                 // 3. Имитируем процесс готовки
                 Thread.sleep(cookingTime);

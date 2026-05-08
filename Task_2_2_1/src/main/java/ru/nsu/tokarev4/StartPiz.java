@@ -85,6 +85,16 @@ public class StartPiz {
         return currentOrderId[0]; // Возвращаем ID для следующего дня
     }
 
+    /**
+     * Синхронизирует правильное завершение рабочего дня.
+     * Поочередно дожидается завершения генерации заказов, окончания работы всех пекарей,
+     * после чего деактивирует склад и ожидает возвращения всех курьеров с доставки.
+     *
+     * @param orderGenerator поток, генерирующий новые заказы.
+     * @param bakerThreads   список потоков работающих пекарей.
+     * @param storage        склад готовых пицц.
+     * @param courierThreads список потоков работающих курьеров.
+     */
     private static void endWorkDay(Thread orderGenerator, List<Thread> bakerThreads, CustomQueue<Order> storage, List<Thread> courierThreads) {
         try {
             // Ждем завершения генерации заказов
@@ -108,6 +118,17 @@ public class StartPiz {
         }
     }
 
+    /**
+     * Создает и запускает поток генерации новых заказов.
+     * Заказы поступают в течение заданного игрового времени (14 секунд) со случайными интервалами.
+     * По истечении времени очередь заказов деактивируется.
+     *
+     * @param startTime      системное время начала смены в миллисекундах.
+     * @param orderQueue     очередь, в которую помещаются новые заказы.
+     * @param currentOrderId массив из одного элемента, содержащий текущий глобальный номер заказа
+     * (используется массив для передачи значения по ссылке и его изменения внутри лямбды).
+     * @return запущенный поток генератора заказов.
+     */
     private static Thread buildOrderGenerator(long startTime, CustomQueue<Order> orderQueue, int [] currentOrderId) {
         Thread orderGenerator = new Thread(() -> {
             while (System.currentTimeMillis() - startTime < 14000) {
@@ -129,6 +150,14 @@ public class StartPiz {
         return orderGenerator;
     }
 
+    /**
+     * Создает и запускает поток курьеров.
+     * У каждого курьера генерируется случайный размер багажника от 1 до 4.
+     * @param couriersCount количество курьеров.
+     * @param startTime     время начала работы для логирования.
+     * @param storage       склад готовых пицц.
+     * @return              поток готовых курьеров.
+     */
     private static List<Thread> startCouriers(int couriersCount, long startTime, CustomQueue<Order> storage) {
         List<Thread> courierThreads = new ArrayList<>();
         for (int i = 0; i < couriersCount; i++) {
@@ -140,6 +169,13 @@ public class StartPiz {
         return courierThreads;
     }
 
+    /**
+     * Создает и запускает поток пекарей.
+     * @param bakersCount количество пекарей.
+     * @param orderQueue  очередь заказов.
+     * @param storage     склад для готовых пицц.
+     * @return            поток готовых пекарей
+     */
     private static List<Thread> startBakers(int bakersCount, CustomQueue<Order> orderQueue, CustomQueue<Order> storage) {
         List<Thread> bakerThreads = new ArrayList<>();
         for (int i = 0; i < bakersCount; i++) {

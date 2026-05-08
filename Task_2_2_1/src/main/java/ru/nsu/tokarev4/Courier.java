@@ -37,7 +37,7 @@ public class Courier implements Runnable {
                 int deliveryTime = 100 + (int) (Math.random() * 201);
                 for (Order order : trunk) {
                     System.out.println("[" + order.getId() + "] В доставке (Время доставки: " +
-                            getGameTime(deliveryTime) +")");
+                            PizUtil.getTime(deliveryTime) +")");
                 }
                 Thread.sleep(deliveryTime);
 
