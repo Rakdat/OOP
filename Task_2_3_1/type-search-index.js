@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"ru.nsu.tokarev4","l":"Direction"},{"p":"ru.nsu.tokarev4","l":"SnakeModel.Point"},{"p":"ru.nsu.tokarev4","l":"Snake"},{"p":"ru.nsu.tokarev4","l":"SnakeController"},{"p":"ru.nsu.tokarev4","l":"SnakeModel"},{"p":"ru.nsu.tokarev4","l":"SnakeServer"}];updateSearchResults();
