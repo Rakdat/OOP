@@ -13,8 +13,14 @@ import java.util.Random;
 public class SnakeModel {
     private final int columns;
     private final int rows;
-    private final int targetFoodCount; // Сколько еды должно быть
-    private final int obstaclesCount;  // Динамическое количество камней
+    /**
+     * Сколько еды должно быть
+     */
+    private final int targetFoodCount;
+    /**
+     * Динамическое количество камней
+     */
+    private final int obstaclesCount;
 
     private final LinkedList<Point> snakeBody = new LinkedList<>();
     private final List<Point> foods = new ArrayList<>();
@@ -211,5 +217,12 @@ public class SnakeModel {
             if (!(obj instanceof Point p)) return false;
             return this.x == p.x && this.y == p.y;
         }
+    }
+
+    /**
+     * Перечисление возможных направлений движения змейки на игровом поле.
+     */
+    public enum Direction {
+        UP, DOWN, LEFT, RIGHT;
     }
 }

@@ -49,7 +49,7 @@ public class SnakeController {
     private int rows = 20;
     private boolean isGameOver = false;
     private int currentScore = 0;
-    private Direction currentDirection = Direction.RIGHT;
+    private SnakeModel.Direction currentDirection = SnakeModel.Direction.RIGHT;
 
     private List<SnakeModel.Point> snakeBody = new ArrayList<>();
     private List<SnakeModel.Point> foods = new ArrayList<>();
@@ -140,7 +140,7 @@ public class SnakeController {
                             for (String part : info) {
                                 if (part.startsWith("GAMEOVER:")) isGameOver = Boolean.parseBoolean(part.split(":")[1]);
                                 else if (part.startsWith("SCORE:")) currentScore = Integer.parseInt(part.split(":")[1]);
-                                else if (part.startsWith("DIR:")) currentDirection = Direction.valueOf(part.split(":")[1]);
+                                else if (part.startsWith("DIR:")) currentDirection = SnakeModel.Direction.valueOf(part.split(":")[1]);
                                 else if (part.startsWith("BODY:")) snakeBody = parsePoints(part);
                                 else if (part.startsWith("FOOD:")) foods = parsePoints(part);
                                 else if (part.startsWith("OBSTACLES:")) obstacles = parsePoints(part);

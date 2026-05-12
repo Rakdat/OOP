@@ -15,13 +15,17 @@ import java.net.InetAddress;
  * и отправляет новые координаты клиенту каждые 150 миллисекунд.
  */
 public class SnakeServer {
-    private static SnakeModel model;
-    private static boolean pause = false;
+    private SnakeModel model;
+    private boolean pause = false;
 
     /**
      * Точка входа для серверного приложения.
      */
     public static void main(String[] args) {
+        new SnakeServer().run();
+    }
+
+    private void run() {
         try (ServerSocket server = new ServerSocket(8080)) {
             System.out.println("=== СЕРВЕР ЗАПУЩЕН ===");
             try {
@@ -57,7 +61,7 @@ public class SnakeServer {
                             String[] parts = com.split(":");
                             if (model != null) {
                                 try {
-                                    model.setDirection(Direction.valueOf(parts[1]));
+                                    model.setDirection(SnakeModel.Direction.valueOf(parts[1]));
                                     pause = Boolean.parseBoolean(parts[2]);
                                 } catch (IllegalArgumentException e) {
                                     System.out.println("Неверное направление: " + parts[1]);
@@ -91,7 +95,7 @@ public class SnakeServer {
      * Формат: STATE;GAMEOVER:false;SCORE:10;DIR:UP;BODY:x,y|x,y;FOOD:x,y|...
      * @return Закодированная строка состояния игрового поля.
      */
-    private static String buildState() {
+    private String buildState() {
         StringBuilder state = new StringBuilder("STATE;");
         state.append("GAMEOVER:").append(model.isGameOver()).append(";");
         state.append("SCORE:").append(model.getScore()).append(";");

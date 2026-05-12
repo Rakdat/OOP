@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Набор тестов для проверки логики игры "Змейка" (SnakeModel).
  */
-class SnakeTest {
+class SnakeMainTest {
 
     private SnakeModel model;
 
@@ -53,14 +53,14 @@ class SnakeTest {
     @Test
     void testDirectionChangeRestriction() {
         // Пытаемся заставить змею (которая идет ВПРАВО) резко пойти ВЛЕВО (на 180 градусов)
-        model.setDirection(Direction.LEFT);
+        model.setDirection(SnakeModel.Direction.LEFT);
 
         // Направление не должно было измениться, сработает защита от самоубийства
-        assertEquals(Direction.RIGHT, model.getCurrentDirection(), "Змее нельзя разворачиваться на 180 градусов");
+        assertEquals(SnakeModel.Direction.RIGHT, model.getCurrentDirection(), "Змее нельзя разворачиваться на 180 градусов");
 
         // А вот вверх повернуть можно!
-        model.setDirection(Direction.UP);
-        assertEquals(Direction.UP, model.getCurrentDirection(), "Змея должна уметь поворачивать на 90 градусов");
+        model.setDirection(SnakeModel.Direction.UP);
+        assertEquals(SnakeModel.Direction.UP, model.getCurrentDirection(), "Змея должна уметь поворачивать на 90 градусов");
     }
 
     @Test

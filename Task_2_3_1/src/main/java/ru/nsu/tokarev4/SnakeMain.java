@@ -11,7 +11,7 @@ import javafx.stage.Stage;
  * Является точкой входа для JavaFX приложения. Отвечает за загрузку
  * графического интерфейса из файла FXML и настройку главного окна программы.
  */
-public class Snake extends Application {
+public class SnakeMain extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
