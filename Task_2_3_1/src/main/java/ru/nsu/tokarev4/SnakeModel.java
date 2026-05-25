@@ -29,7 +29,7 @@ public class SnakeModel {
     private final List<Point> nextObstacles = new ArrayList<>();
 
     private final List<Point> severedBody = new ArrayList<>();
-    private int severedBlinkTicks = 0;
+    private int severedBlinkTicks = Config.BLINK_TICKS;
 
     private Direction currentDirection = Direction.RIGHT;
     private Direction lastMovedDirection = Direction.RIGHT;
@@ -37,8 +37,8 @@ public class SnakeModel {
 
     private int tickCounter = 0;
     private boolean isTransitioning = false;
-    private static final int TICKS_BEFORE_CHANGE = 67;
-    private static final int TICKS_TRANSITION = 20;
+    private static final int TICKS_BEFORE_CHANGE = Config.TICKS_BEFORE_CHANGE;
+    private static final int TICKS_TRANSITION = Config.TRANSITION_TICKS;
 
     /**
      * Создает новую игровую сессию.
