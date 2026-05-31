@@ -25,7 +25,7 @@ public class SnakeMain extends Application {
             controller.handleKeyPress(event.getCode().toString());
         });
 
-        primaryStage.setTitle("Змейка");
+        primaryStage.setTitle(Config.TITLE);
         primaryStage.setScene(scene);
 
         primaryStage.setMinWidth(400);  // Минимальная ширина

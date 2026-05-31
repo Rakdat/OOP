@@ -11,7 +11,7 @@ version = '1.0-SNAPSHOT'
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(21))
+        languageVersion.set(JavaLanguageVersion.of(17))
     }
 }
 
@@ -27,14 +27,14 @@ repositories {
 }
 
 javafx {
-    version = "21"
+    version = "17"
     modules = [ 'javafx.controls', 'javafx.fxml' ]
 }
 
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.9.1')
     testImplementation 'org.junit.jupiter:junit-jupiter'
-
+    implementation 'org.apache.groovy:groovy:4.0.15'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
@@ -58,7 +58,7 @@ jacocoTestReport {
 
 
 application {
-    mainClass = 'ru.nsu.tokarev4.Snake'
+    mainClass = 'ru.nsu.tokarev4.SnakeMain'
 }
 
 jar {

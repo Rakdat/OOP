@@ -26,7 +26,7 @@ public class SnakeServer {
     }
 
     private void run() {
-        try (ServerSocket server = new ServerSocket(8080)) {
+        try (ServerSocket server = new ServerSocket(Config.SERVER_PORT)) {
             System.out.println("=== СЕРВЕР ЗАПУЩЕН ===");
             try {
                 // Пытаемся узнать локальный IP-адрес компьютера в сети
@@ -35,7 +35,7 @@ public class SnakeServer {
             } catch (Exception e) {
                 System.out.println("Не удалось определить IP автоматически.");
             }
-            System.out.println("Ждем подключения клиента на порту 8080...\n");
+            System.out.println("Ждем подключения клиента на порту " + Config.SERVER_PORT + "...\n");
 
             Socket client = server.accept();
             System.out.println("Клиент успешно подключился!");
@@ -83,7 +83,7 @@ public class SnakeServer {
                 if (model != null) {
                     out.println(buildState());
                 }
-                Thread.sleep(150);
+                Thread.sleep(Config.TICK_RATE_MS);
             }
         } catch (Exception e) {
             e.printStackTrace();

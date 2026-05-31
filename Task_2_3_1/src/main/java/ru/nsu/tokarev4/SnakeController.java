@@ -40,6 +40,7 @@ public class SnakeController {
     @FXML private TextField foodCountInput;
     @FXML private Label scoreLabel;
     @FXML private Button actionButton;
+    @FXML private Label settingsLabel;
 
     private Socket socket;
     private PrintWriter out;
@@ -64,6 +65,10 @@ public class SnakeController {
         canvasContainer.widthProperty().addListener((obs, oldVal, newVal) -> resizeCanvas());
         canvasContainer.heightProperty().addListener((obs, oldVal, newVal) -> resizeCanvas());
         drawBlankGrid();
+        actionButton.setText(Config.BTN_START);
+        if (settingsLabel != null) {
+            settingsLabel.setText(Config.BTN_SETTINGS);
+        }
     }
 
     private void resizeCanvas() {
@@ -102,7 +107,7 @@ public class SnakeController {
 
             try {
                 if (out == null) {
-                    socket = new Socket(ipAddress, 8080);
+                    socket = new Socket(ipAddress, Config.SERVER_PORT);
                     out = new PrintWriter(socket.getOutputStream(), true);
                     in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     out.println("INIT:" + columns + ":" + foodCount);
@@ -238,17 +243,17 @@ public class SnakeController {
 
     private void showGameOverScreen() {
         gameState = State.GAME_OVER;
-        actionButton.setText("РЕСТАРТ");
+        actionButton.setText(Config.BTN_RESTART);
         actionButton.setDisable(false);
         settingsBox.setVisible(true);
-        scoreLabel.setText("ИГРА ОКОНЧЕНА! Счет: " + currentScore);
-        scoreLabel.setTextFill(Color.web("#e74c3c"));
+        scoreLabel.setText(Config.GAMEOVER_TEXT + currentScore);
+        scoreLabel.setTextFill(Color.web(Config.COLOR_FOOD));
     }
 
     private void drawBlankGrid() {
         if (gameCanvas.getWidth() == 0) return;
         GraphicsContext gc = gameCanvas.getGraphicsContext2D();
-        gc.setFill(Color.web("#1e1e1e"));
+        gc.setFill(Color.web(Config.COLOR_BG));
         gc.fillRect(0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
     }
 
@@ -269,22 +274,22 @@ public class SnakeController {
         double cellW = gameCanvas.getWidth() / columns;
         double cellH = gameCanvas.getHeight() / rows;
 
-        gc.setFill(Color.web("#1e1e1e"));
+        gc.setFill(Color.web(Config.COLOR_BG));
         gc.fillRect(0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
 
-        gc.setStroke(Color.web("#ffffff", 0.05));
+        gc.setStroke(Color.web(Config.COLOR_GRID, 0.05));
         gc.setLineWidth(1);
         for (int i = 0; i <= columns; i++) gc.strokeLine(i * cellW, 0, i * cellW, gameCanvas.getHeight());
         for (int i = 0; i <= rows; i++) gc.strokeLine(0, i * cellH, gameCanvas.getWidth(), i * cellH);
 
         // Постоянные камни
-        gc.setFill(Color.web("#7f8c8d"));
+        gc.setFill(Color.web(Config.COLOR_OBSTACLE));
         for (SnakeModel.Point obs : obstacles) {
             gc.fillRect(obs.x * cellW, obs.y * cellH, cellW - 1, cellH - 1);
         }
 
         // Будущие камни (Мигающие оранжевым)
-        gc.setFill(Color.web("#f39c12", 0.8));
+        gc.setFill(Color.web(Config.COLOR_OBSTACLE_WARN, 0.8));
         for (SnakeModel.Point obs : nextObstacles) {
             if (System.currentTimeMillis() % 400 < 200) {
                 gc.fillRect(obs.x * cellW, obs.y * cellH, cellW - 1, cellH - 1);
@@ -293,26 +298,26 @@ public class SnakeController {
 
         // Оторванный хвост (Мигающий красно-зеленым)
         for (SnakeModel.Point p : severedBody) {
-            if (System.currentTimeMillis() % 200 < 100) gc.setFill(Color.RED);
-            else gc.setFill(Color.web("#2ecc71", 0.5));
+            if (System.currentTimeMillis() % 200 < 100) gc.setFill(Color.web(Config.COLOR_TAIL_WARN1));
+            else gc.setFill(Color.web(Config.COLOR_TAIL_WARN2, 0.5));
             gc.fillOval(p.x * cellW, p.y * cellH, cellW - 1, cellH - 1);
         }
 
         // Еда
-        gc.setFill(Color.web("#e74c3c"));
+        gc.setFill(Color.web(Config.COLOR_FOOD));
         for (SnakeModel.Point food : foods) {
             gc.fillRoundRect(food.x * cellW + 2, food.y * cellH + 2, cellW - 4, cellH - 4, 15, 15);
         }
 
         // Тело змеи
-        gc.setFill(Color.web("#2ecc71"));
+        gc.setFill(Color.web(Config.COLOR_SNAKE_BODY));
         for (int i = 1; i < snakeBody.size(); i++) {
             gc.fillOval(snakeBody.get(i).x * cellW, snakeBody.get(i).y * cellH, cellW - 1, cellH - 1);
         }
 
         // Голова змеи
         SnakeModel.Point head = snakeBody.get(0);
-        gc.setFill(Color.web("#27ae60"));
+        gc.setFill(Color.web(Config.COLOR_SNAKE_HEAD));
         gc.fillOval(head.x * cellW, head.y * cellH, cellW - 1, cellH - 1);
 
         // Глаза
